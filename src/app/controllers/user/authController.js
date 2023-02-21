@@ -21,7 +21,7 @@ module.exports = {
         } else {
             console.log('verification failed')
             res.json({
-                "status": false,
+                "success": false,
                 "message": "invalid Credentials"
             })
         }
