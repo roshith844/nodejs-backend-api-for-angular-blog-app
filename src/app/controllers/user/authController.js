@@ -11,6 +11,7 @@ module.exports = {
             res.status(400).json({
                 message: "validation failed"
             })
+            return
         }
 
         const VERIFICATION_SUCCESS = await formDataVerificationService.verifyUser(email, password)
@@ -29,6 +30,7 @@ module.exports = {
     },
 
     signupUser: async (req, res) => {
+        
         const { name, email, password, confirmPassword } = req.body
         if ((await formValidation.checkUserExistance(email) == true)) {
             res.json({
