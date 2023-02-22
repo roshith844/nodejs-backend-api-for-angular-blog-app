@@ -1,3 +1,14 @@
+function vallidateName(name) {
+  const NAME_PATTERN = /^[a-z ,.'-]+$/i
+  if (typeof name != 'string') {
+    return
+  }
+  if (!NAME_PATTERN.test(name)) {
+    return false
+  }
+  return true
+}
+
 function validateEmail(email) {
   const EMAIL_PATTERN = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
 
@@ -21,5 +32,5 @@ function validatePassword(password) {
 }
 
 module.exports = {
-  validateEmail, validatePassword
+  validateEmail, validatePassword, vallidateName
 }
