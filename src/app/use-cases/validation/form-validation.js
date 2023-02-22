@@ -1,3 +1,4 @@
+const userService = require('./../../data-access/userService')
 function vallidateName(name) {
   const NAME_PATTERN = /^[a-z ,.'-]+$/i
   if (typeof name != 'string') {
@@ -31,6 +32,12 @@ function validatePassword(password) {
   return true
 }
 
+function checkUserExistance(email) {
+  if (userService.isEmailExists(email) != null) {
+    return true
+  }
+  return false
+}
 module.exports = {
-  validateEmail, validatePassword, vallidateName
+  validateEmail, validatePassword, vallidateName, checkUserExistance
 }

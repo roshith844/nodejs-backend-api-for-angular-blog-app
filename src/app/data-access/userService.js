@@ -5,8 +5,12 @@ async function getUserDataFromEmail(email) {
     return await USER_MODEL.findOne({ "email": email })
 }
 
-async function saveUserData(data){
-   await USER_MODEL.create({name: data.name, email: data.email, password: data.password })
+async function saveUserData(data) {
+    await USER_MODEL.create({ name: data.name, email: data.email, password: data.password })
 }
 
-module.exports = { getUserDataFromEmail,saveUserData }
+async function isEmailExists(email) {
+    return await USER_MODEL.exists({ email: email })
+}
+
+module.exports = { getUserDataFromEmail, saveUserData, isEmailExists }
