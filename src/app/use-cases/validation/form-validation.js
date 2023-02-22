@@ -32,8 +32,8 @@ function validatePassword(password) {
   return true
 }
 
-function checkUserExistance(email) {
-  if (userService.isEmailExists(email) != null) {
+async function checkUserExistance(email) {
+  if (await userService.isEmailExists(email) != null) {
     return true
   }
   return false
