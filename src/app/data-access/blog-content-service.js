@@ -5,4 +5,7 @@ async function getLatestBlogs(numberOfBlogs){
     return await POST_MODEL.aggregate([{ $limit : numberOfBlogs }])
 }
 
-module.exports = { getLatestBlogs }
+async function getBlogContent(slug){
+    return await POST_MODEL.aggregate([ { $match : { slug : slug } } ])
+}
+module.exports = { getLatestBlogs, getBlogContent }

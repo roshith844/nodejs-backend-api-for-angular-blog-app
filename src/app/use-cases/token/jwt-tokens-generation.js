@@ -4,8 +4,8 @@ function generateJwtTokens(userDetails) {
     const REFRESH_TOKEN = jwtTokenService.generateRefreshToken(userDetails)
     return {
         "success": true,
-        "accessToken": ACCESS_TOKEN,
-        "refreshToken": REFRESH_TOKEN
+        "accessToken": `Bearer ${ACCESS_TOKEN}`,
+        "refreshToken": `Bearer ${REFRESH_TOKEN}`
     }
 }
 

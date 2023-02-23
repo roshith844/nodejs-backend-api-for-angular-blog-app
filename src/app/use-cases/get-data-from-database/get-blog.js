@@ -11,4 +11,14 @@ async function getBlogCards() {
     return BLOG_CONTENT
 }
 
-module.exports = { getBlogCards }
+async function getBlogContent(slug){
+    const CONTENT = await blogContentService.getBlogContent(slug)
+    if(CONTENT !== null){
+              return CONTENT[0]
+    }else{
+        return false
+    }
+    
+}
+
+module.exports = { getBlogCards,getBlogContent }
