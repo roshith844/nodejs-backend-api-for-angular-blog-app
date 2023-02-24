@@ -1,6 +1,6 @@
 const formValidation = require('../../use-cases/validation/form-validation')
 const formDataVerificationService = require('./../../use-cases/verification/formData-verification')
-const jwtTokenGenerationService = require('./../../use-cases/token/jwt-tokens-generation')
+const jwtTokenGenerationService = require('../../use-cases/token/jwt-token-management')
 const hashingService = require('./../../use-cases/hashing/password-hashing')
 const saveToDatabaseService = require('./../../use-cases/save-to-database/save-user-data')
 module.exports = {
@@ -30,7 +30,7 @@ module.exports = {
     },
 
     signupUser: async (req, res) => {
-        
+
         const { name, email, password, confirmPassword } = req.body
         if ((await formValidation.checkUserExistance(email) == true)) {
             res.json({

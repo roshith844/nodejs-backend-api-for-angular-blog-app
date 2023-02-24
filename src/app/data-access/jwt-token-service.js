@@ -12,12 +12,13 @@ function generateRefreshToken(userDetails) {
 }
 
 function verifyJwtToken(token) {
-    jwt.verify(token, REFRESH_TOKEN_SECRET, (err, user) => {
-        if (err) return res.sendStatus(403)
-        req.user = user
-    })
-    next()
-}
+   return jwt.verify(token.split(' ')[1], ACCESS_TOKEN_SECRET)
+    // jwt.verify(token, REFRESH_TOKEN_SECRET, (err, user) => {
+    //     // res.sendStatus(403)
+    //     if (err) return false
+    //     return user
+    // })
 
+}
 
 module.exports = { generateAccessToken, verifyJwtToken, generateRefreshToken }

@@ -1,4 +1,4 @@
-const jwtTokenService = require('./../../data-access/jwt-token-service')
+const jwtTokenService = require('../../data-access/jwt-token-service')
 function generateJwtTokens(userDetails) {
     const ACCESS_TOKEN = jwtTokenService.generateAccessToken(userDetails)
     const REFRESH_TOKEN = jwtTokenService.generateRefreshToken(userDetails)
@@ -9,4 +9,13 @@ function generateJwtTokens(userDetails) {
     }
 }
 
-module.exports = { generateJwtTokens }
+function getUserEmailFromToken(token){
+    const DECODED_TOKEN = jwtTokenService.verifyJwtToken(token)
+    if(DECODED_TOKEN){
+        return DECODED_TOKEN.email
+    }else{
+        false
+    }
+}
+
+module.exports = { generateJwtTokens,getUserEmailFromToken }
