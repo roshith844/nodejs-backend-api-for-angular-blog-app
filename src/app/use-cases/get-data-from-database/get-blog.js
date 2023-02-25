@@ -11,14 +11,29 @@ async function getBlogCards() {
     return BLOG_CONTENT
 }
 
-async function getBlogContent(slug){
+async function getBlogContent(slug) {
     const CONTENT = await blogContentService.getBlogContent(slug)
-    if(CONTENT !== null){
-              return CONTENT[0]
-    }else{
+    if (CONTENT !== null) {
+        return CONTENT[0]
+    } else {
         return false
     }
-    
 }
 
-module.exports = { getBlogCards,getBlogContent }
+async function getBlogCardFromArticleId(articleIdArray) {
+    let BLOG_CARDS = []
+
+    for(let i = 0 ; i < articleIdArray.length; i++){
+        let BLOG = await blogContentService.getBlogFormDatabase(articleIdArray[i])
+        if (BLOG != null) {
+
+            BLOG.content = BLOG.content.substr(0, 200)
+            BLOG_CARDS.push(BLOG)
+        }
+    }
+        return BLOG_CARDS
+}
+
+
+
+module.exports = { getBlogCards, getBlogContent, getBlogCardFromArticleId }

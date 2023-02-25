@@ -1,6 +1,8 @@
 const favoritesService = require('./../../use-cases/interactions/favorites')
 const jwtTokenManagement = require('../../use-cases/token/jwt-token-management')
 const userDetailsManagement = require('./../../use-cases/get-data-from-database/get-user-details')
+const { getFavoriteItems } = require('../../use-cases/get-data-from-database/get-favorites')
+const { getBlogCardFromArticleId } = require('../../use-cases/get-data-from-database/get-blog')
 
 module.exports = {
     addToFavorites: async (req, res) => {
@@ -23,6 +25,7 @@ module.exports = {
                     "success": false
                 })
                 res.end()
+                return
             } else {
 
                 // check user has favorites doc
@@ -51,11 +54,35 @@ module.exports = {
                 }
             }
 
-            // store the id of article in collection array
-            // console.log(USER_EMAIL)
-            // 
+        }
+    },
+    getFavoritesCards: async (req, res) => {
 
+        // get user email from token 
+        const USER_EMAIL = jwtTokenManagement.getUserEmailFromToken(req.headers.authorization)
+        // get user id from details from email
+        const USER_ID = await userDetailsManagement.getDocumentId(USER_EMAIL)
+        if (USER_ID == false) {
+            res.end()
+            return
+        }
+        // get all cards data 
+        const FAVORITE_ITEMS_IDS = await getFavoriteItems(USER_ID)
 
+        if (FAVORITE_ITEMS_IDS == false) {
+            console.log('there is nothing ')
+            res.json({
+                "success": false,
+
+            })
+        } else {
+            const FAVORITE_CARDS = await getBlogCardFromArticleId(FAVORITE_ITEMS_IDS)
+            if (FAVORITE_CARDS != null) {
+                res.json({
+                    "success": true,
+                    "data":  FAVORITE_CARDS 
+                })
+            }
 
         }
     }

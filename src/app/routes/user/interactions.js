@@ -3,6 +3,7 @@ const router = express.Router()
 const interactionsController = require('./../../controllers/user/interactionsController')
 const verifyTokenMiddleware = require('./../../middlewares/user/verifyToken')
 
-router.patch('/favorites/add',verifyTokenMiddleware.verifyUser, interactionsController.addToFavorites )
+router.patch('/favorites/add', verifyTokenMiddleware.verifyUser, interactionsController.addToFavorites)
+router.get('/favorites/get/cards', verifyTokenMiddleware.verifyUser, interactionsController.getFavoritesCards)
 
 module.exports = router

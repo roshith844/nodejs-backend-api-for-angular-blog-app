@@ -28,15 +28,14 @@ async function createFavoritesAndAdd(USER_ID, articleId) {
 
 async function ArticleIdExists(userId, articleId) {
     const RESPONSE = await favoritesService.checkArticleIdExistsOnDatabase(userId, articleId)
-    if(RESPONSE == [] ){
+    if (RESPONSE.length === 0 || RESPONSE === null) {
         return false
-    }else if ( RESPONSE[0].count >= 1 ) {
+    } else if (RESPONSE[0].count >= 1) {
         return true
-    }else{
+    } else {
         return false
     }
 
-    return RESPONSE
 }
 module.exports = {
     addToFavorites, checkUserHasFavoritesCollection, createFavoritesAndAdd, ArticleIdExists

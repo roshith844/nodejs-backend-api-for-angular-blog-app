@@ -7,19 +7,20 @@ module.exports = {
             "cards": LATEST_BLOG_CARDS
         })
     },
-    getBlogContent: async (req, res) => { 
-       // get data from database 
-      const BLOG_CONTENT = await blogService.getBlogContent(req.params.slug)
-      if( BLOG_CONTENT == false){
-        res.json({
-            "success" : false
-           })
-      }else{
-        console.log(BLOG_CONTENT)
-        res.json({
-            "success" : true,
-            "data": BLOG_CONTENT 
-           })
-      }
+
+    getBlogContent: async (req, res) => {
+        // get data from database 
+        const BLOG_CONTENT = await blogService.getBlogContent(req.params.slug)
+        if (BLOG_CONTENT == false) {
+            res.json({
+                "success": false
+            })
+        } else {
+            console.log(BLOG_CONTENT)
+            res.json({
+                "success": true,
+                "data": BLOG_CONTENT
+            })
+        }
     }
 }
