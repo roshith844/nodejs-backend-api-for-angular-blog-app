@@ -8,7 +8,7 @@ async function getFavoriteItems(userId) {
   // } else if(FAVORITES) {
 
     const RESPONSE = await getFavorites(userId)
-    if(RESPONSE == []){
+    if(RESPONSE.length === 0){
       return false
     }else{
       return RESPONSE[0].items
