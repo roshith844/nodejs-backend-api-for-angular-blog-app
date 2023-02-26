@@ -7,7 +7,8 @@ const POST_SCHEMA = new mongoose.Schema({
     },
     title: String,
     content: String,
-    author : String,
+    author: String,
+    pageviews: { type: Number, default: 0 },
     tags: [{ type: String, default: 'blog' }],
     likes: { type: Number, default: 0 },
     favorites: { type: Number, default: 0 }

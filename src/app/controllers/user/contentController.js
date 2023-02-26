@@ -16,7 +16,6 @@ module.exports = {
                 "success": false
             })
         } else {
-            console.log(BLOG_CONTENT)
             res.json({
                 "success": true,
                 "data": BLOG_CONTENT
