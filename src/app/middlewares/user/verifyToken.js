@@ -4,29 +4,34 @@ const ACCESS_TOKEN_SECRET = '4c2beacdb5767f39c44536f4c0207fced37b6322a2ad564a177
 const REFRESH_TOKEN_SECRET = '4c2beacdb5767f39c44536f4c0207fced37b6322a2ad564a177a5361d41b63044a9ee0389d8f71f894c72fd53ffb09d1d7325143ca2078e44c0d673692aaaf9a'
 
 module.exports = {
-    verifyUser: (req, res, next) => {
-        const TOKEN = req.headers.authorization
-        if (!TOKEN) {
-          return res.status(400).send({
-            token: false,
-            message: 'No token provided',
-          });
-        }
+  verifyUser: (req, res, next) => {
+    const TOKEN = req.headers.authorization
+    if (!TOKEN) {
+      return res.status(400).send({
+        token: false,
+        message: 'No token provided',
+      });
+    }
 
-        try {
-          const DECODED = jwt.verify(TOKEN.split(' ')[1], ACCESS_TOKEN_SECRET);
-          if (DECODED) next();
-          else {
-            return res.status(400).send({
-              token: false,
-              message: 'invalid token',
-            });
-          }
-        } catch (error) {
-          return res.status(400).send({
-            token: false,
-            message: 'invalid token',
-          });
-        }
-      },
+    try {
+      const DECODED = jwt.verify(TOKEN.split(' ')[1], ACCESS_TOKEN_SECRET);
+      if (DECODED) {
+        // console.log("decoded token is : ")
+      
+        // req.user = DECODED
+        console.log(req.user)
+        next();
+      } else {
+        return res.status(400).send({
+          token: false,
+          message: 'invalid token',
+        });
+      }
+    } catch (error) {
+      return res.status(400).send({
+        token: false,
+        message: 'invalid token',
+      });
+    }
+  },
 }

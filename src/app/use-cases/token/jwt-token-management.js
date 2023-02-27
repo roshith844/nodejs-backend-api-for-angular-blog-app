@@ -9,13 +9,22 @@ function generateJwtTokens(userDetails) {
     }
 }
 
-function getUserEmailFromToken(token){
+function getUserEmailFromToken(token) {
     const DECODED_TOKEN = jwtTokenService.verifyJwtToken(token)
-    if(DECODED_TOKEN){
+    if (DECODED_TOKEN) {
         return DECODED_TOKEN.email
-    }else{
+    } else {
         false
     }
 }
 
-module.exports = { generateJwtTokens,getUserEmailFromToken }
+function decodeJwtToken(token) {
+    const DECODED_TOKEN = jwtTokenService.verifyJwtToken(token)
+    if (DECODED_TOKEN) {
+        return DECODED_TOKEN
+    } else {
+        false
+    }
+}
+
+module.exports = { generateJwtTokens, getUserEmailFromToken, decodeJwtToken }

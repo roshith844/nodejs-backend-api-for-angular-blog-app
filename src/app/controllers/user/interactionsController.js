@@ -5,7 +5,7 @@ const { getFavoriteItems } = require('../../use-cases/get-data-from-database/get
 const { getBlogCardFromArticleId } = require('../../use-cases/get-data-from-database/get-blog')
 
 module.exports = {
-    addToFavorites: async (req, res) => {
+    addOrRemoveFromFavorites: async (req, res) => {
         const { articleId } = req.body
 
         // decode token
@@ -34,17 +34,21 @@ module.exports = {
                 // if favorite exists push articleId to items 
                 if (USER_HAS_FAVORITES_COLLECTIONS == true) {
 
-                    const ARTICLE_EXISTS = await favoritesService.ArticleIdExists(USER_ID, articleId)
+                    const ARTICLE_EXISTS = await favoritesService.isArticleIsOnFavorites(USER_ID, articleId)
                     if (ARTICLE_EXISTS == true) {
+                        // remove from favorites
+                        await favoritesService.RemoveFromFavorites(USER_ID, articleId)
+
                         res.json({
-                            "success": false,
-                            "message": "item already exists"
+                            "success": true,
+                            "status": "remove"
                         })
 
                     } else {
                         await favoritesService.addToFavorites(USER_ID, articleId)
                         res.json({
-                            "success": true
+                            "success": true,
+                            "status": "add"
                         })
                     }
 
@@ -80,7 +84,7 @@ module.exports = {
             if (FAVORITE_CARDS != null) {
                 res.json({
                     "success": true,
-                    "data":  FAVORITE_CARDS 
+                    "data": FAVORITE_CARDS
                 })
             }
 

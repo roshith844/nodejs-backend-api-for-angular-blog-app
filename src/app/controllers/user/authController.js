@@ -3,6 +3,7 @@ const formDataVerificationService = require('./../../use-cases/verification/form
 const jwtTokenGenerationService = require('../../use-cases/token/jwt-token-management')
 const hashingService = require('./../../use-cases/hashing/password-hashing')
 const saveToDatabaseService = require('./../../use-cases/save-to-database/save-user-data')
+const { getDocumentId } = require('../../use-cases/get-data-from-database/get-user-details')
 module.exports = {
     loginUser: async (req, res) => {
         const { email, password } = req.body
@@ -15,8 +16,9 @@ module.exports = {
         }
 
         const VERIFICATION_SUCCESS = await formDataVerificationService.verifyUser(email, password)
+        const USER_ID = await getDocumentId(email)
         if (VERIFICATION_SUCCESS) {
-            const USER_DETAILS = { "email": email }
+            const USER_DETAILS = { "id": USER_ID, "email": email }
             const TOKENS = jwtTokenGenerationService.generateJwtTokens(USER_DETAILS)
             res.json(TOKENS)
 

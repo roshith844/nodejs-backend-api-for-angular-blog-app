@@ -1,4 +1,5 @@
 const FAVORITES_MODEL = require('../../models/favoritesSchema')
+const mongoose = require('mongoose')
 async function checkUserExists(userId) {
 
     /*
@@ -12,6 +13,11 @@ async function pushArticleIdToFavorites(userId, articleId) {
     return await FAVORITES_MODEL.updateOne({ userId: userId }, { $push: { items: articleId } })
 }
 
+// Removes articleId from favorites collection
+async function pullArticleIdFromFavorites(userId, articleId) {
+    return await FAVORITES_MODEL.updateOne({ userId: userId }, { $pull: { items: articleId } })
+}
+
 async function createFavoritesAndAdd(userId, articleId) {
     return await FAVORITES_MODEL.create({
         userId: userId,
@@ -19,13 +25,16 @@ async function createFavoritesAndAdd(userId, articleId) {
     })
 }
 
-async function checkArticleIdExistsOnDatabase(userId, articleId) {
+async function checkArticleIdExistsOnFavorites(userId, articleId) {
     // match unwind and find count , if count is 1 return true
-    return await FAVORITES_MODEL.aggregate([{ $match: { userId: userId } }, { $unwind: "$items" }, { $match: { items: articleId } }, { $count: "count" }]).exec()
+    const USER_ID_AS_OBJECT_ID = mongoose.Types.ObjectId(userId)
+    const ARTICLE_ID = articleId.toString()
+
+    return await FAVORITES_MODEL.aggregate([{ $match: { userId: USER_ID_AS_OBJECT_ID } }, { $unwind: "$items" }, { $match: { items: ARTICLE_ID } }, { $count: 'count' }])
 }
 
 async function getFavorites(userId) {
     return await FAVORITES_MODEL.aggregate([{ $match: { userId: userId } }])
 }
 
-module.exports = { checkUserExists, pushArticleIdToFavorites, createFavoritesAndAdd, checkArticleIdExistsOnDatabase, getFavorites }
+module.exports = { checkUserExists, pushArticleIdToFavorites, createFavoritesAndAdd, checkArticleIdExistsOnFavorites, getFavorites, pullArticleIdFromFavorites }
