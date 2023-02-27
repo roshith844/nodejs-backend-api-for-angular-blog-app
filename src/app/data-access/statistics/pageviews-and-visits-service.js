@@ -23,4 +23,13 @@ async function incrementVisitsCountOnDatabase() {
         return false
     }
 }
-module.exports = { incrementPageViewInDatabase, incrementVisitsCountOnDatabase }
+
+async function getPageViewsFromDatabase(articleId) {
+    const RESPONSE = await POST_MODEL.findOne({ _id: articleId }, { pageviews: 1, _id: 0 })
+    if (RESPONSE != null) {
+        return RESPONSE.pageviews
+    } else {
+        return false
+    }
+}
+module.exports = { incrementPageViewInDatabase, incrementVisitsCountOnDatabase, getPageViewsFromDatabase }

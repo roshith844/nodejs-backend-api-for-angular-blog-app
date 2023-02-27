@@ -1,3 +1,4 @@
+const { getPageViewsOfArticle } = require("../../use-cases/get-data-from-database/get-statistics-data")
 const { incrementPageViews, incrementVisitsCount } = require("../../use-cases/save-to-database/update-views-and-visits")
 
 module.exports = {
@@ -34,5 +35,22 @@ module.exports = {
             })
         }
 
+    },
+
+    getPageViewsCount: async (req, res) => {
+        const ARTICLE_ID = req.params.articleId
+
+        const PAGE_VIEWS = await getPageViewsOfArticle(ARTICLE_ID)
+        if (PAGE_VIEWS != false) {
+            res.json({
+                "success": true,
+                "views": PAGE_VIEWS
+            })
+        } else {
+            res.json({
+                "success": true,
+                "views": PAGE_VIEWS
+            })
+        }
     }
 }
