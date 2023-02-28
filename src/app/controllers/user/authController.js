@@ -45,6 +45,6 @@ module.exports = {
                 "success": true
             })
         }
+    },
 
-    }
 }

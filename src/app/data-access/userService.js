@@ -5,6 +5,9 @@ async function getUserDataFromEmail(email) {
     return await USER_MODEL.findOne({ "email": email })
 }
 
+async function getUserDataFromId(userId){
+    return await USER_MODEL.findOne({ "_id": userId })
+}
 async function saveUserData(data) {
     await USER_MODEL.create({ name: data.name, email: data.email, password: data.password })
 }
@@ -23,4 +26,4 @@ async function updateRole(userId, role) {
     }
 }
 
-module.exports = { getUserDataFromEmail, saveUserData, isEmailExists, updateRole }
+module.exports = { getUserDataFromEmail, getUserDataFromId, saveUserData, isEmailExists, updateRole }
