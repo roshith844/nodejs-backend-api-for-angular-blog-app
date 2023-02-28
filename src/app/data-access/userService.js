@@ -13,4 +13,14 @@ async function isEmailExists(email) {
     return await USER_MODEL.exists({ email: email })
 }
 
-module.exports = { getUserDataFromEmail, saveUserData, isEmailExists }
+async function updateRole(userId, role) {
+    const USER_ID_AS_OBJECT_ID = mongoose.Types.ObjectId(userId)
+    const DATABASE_RESPONSE = await USER_MODEL.updateOne({ _id: USER_ID_AS_OBJECT_ID }, { role: role })
+    if (DATABASE_RESPONSE.acknowledged == true) {
+        return true
+    } else {
+        return false
+    }
+}
+
+module.exports = { getUserDataFromEmail, saveUserData, isEmailExists, updateRole }

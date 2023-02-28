@@ -6,6 +6,7 @@ const userAuthRoutes = require('./routes/user/auth')
 const contentRoutes = require('./routes/user/content')
 const interactionRoutes = require('./routes/user/interactions')
 const statisticsRoutes = require('./routes/user/statistics')
+const becomeWriterRoutes = require('./routes/user/become-writer')
 
 require('./database')
 
@@ -16,6 +17,7 @@ app.use('/', userAuthRoutes)
 app.use('/blog', contentRoutes)
 app.use('/', interactionRoutes)
 app.use('/', statisticsRoutes)
+app.use('/writer', becomeWriterRoutes)
 
 app.listen(3000, () => {
     console.log(`app listening on port 3000`)
