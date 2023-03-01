@@ -1,4 +1,5 @@
 const mongoose = require('mongoose')
+const { ObjectId } = mongoose.Schema;
 
 const POST_SCHEMA = new mongoose.Schema({
     slug: {
@@ -7,7 +8,7 @@ const POST_SCHEMA = new mongoose.Schema({
     },
     title: String,
     content: String,
-    author: String,
+    author: {type: ObjectId},
     pageviews: { type: Number, default: 0 },
     tags: [{ type: String, default: 'blog' }],
     likes: { type: Number, default: 0 },
