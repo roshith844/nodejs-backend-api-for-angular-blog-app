@@ -1,3 +1,4 @@
+const { validateSlug } = require("../../use-cases/validation/validate-slug")
 const { savePost } = require("../../use-cases/writer/save-to-database/save-blog")
 
 module.exports = {
@@ -5,7 +6,24 @@ module.exports = {
         const { title, content, slug } = req.body
         console.log(req.body)
         const USER_ID = req.user
+
         if (title === null || content === null || USER_ID === null || slug === null) {
+            res.json({
+                "success": false,
+                "message": "validation failed"
+            })
+            res.end()
+            return
+        }
+
+        // Checks slug is unique
+        const IS_VALIDATED = await validateSlug(slug)
+        if (IS_VALIDATED != true) {
+            res.json({
+                "success": false,
+                "message": "validation failed"
+            })
+            res.end()
             return
         }
 

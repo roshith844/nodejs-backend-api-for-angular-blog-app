@@ -12,4 +12,5 @@ async function savePostToDatabase(userId, title, content, slug) {
         return false
     }
 }
+
 module.exports = { savePostToDatabase }
