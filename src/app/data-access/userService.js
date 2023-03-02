@@ -8,6 +8,7 @@ async function getUserDataFromEmail(email) {
 async function getUserDataFromId(userId){
     return await USER_MODEL.findOne({ "_id": userId })
 }
+
 async function saveUserData(data) {
     await USER_MODEL.create({ name: data.name, email: data.email, password: data.password })
 }

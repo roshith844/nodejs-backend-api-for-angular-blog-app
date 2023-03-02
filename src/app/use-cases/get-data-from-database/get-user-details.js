@@ -16,7 +16,12 @@ async function getUserRole(userId) {
     } else {
         return false
     }
-
 }
 
-module.exports = { getDocumentId, getUserRole }
+async function getUserDetails(userId){
+    const USER_DETAILS = await userService.getUserDataFromId(userId)
+    if(USER_DETAILS === null || USER_DETAILS.length === 0 ) return false
+    return USER_DETAILS
+} 
+
+module.exports = { getDocumentId, getUserRole, getUserDetails }
