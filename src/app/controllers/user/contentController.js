@@ -14,14 +14,17 @@ module.exports = {
         let isUserLoggedIn = false
         let userId
         let isFavorite = false
-        if (req.headers.hasOwnProperty('authorization')) {
-            const TOKEN = req.headers.authorization
-            const DECODED_TOKEN = decodeJwtToken(TOKEN)
-            if (DECODED_TOKEN != false) {
-                isUserLoggedIn = true
-                userId = DECODED_TOKEN.id
 
+        if (req.headers.hasOwnProperty('authorization' )) {
+            const TOKEN = req.headers.authorization
+            if(!TOKEN){
+                const DECODED_TOKEN = decodeJwtToken(TOKEN)
+                if (DECODED_TOKEN != false) {
+                    isUserLoggedIn = true
+                    userId = DECODED_TOKEN.id
+                }
             }
+           
         }
 
         // get data from database 

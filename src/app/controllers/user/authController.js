@@ -38,7 +38,7 @@ module.exports = {
             res.json({
                 "success": false
             })
-        } else if (password === confirmPassword && (formValidation.vallidateName(name) && formValidation.validateEmail(email) && validatePhoneNumber(phone) && formValidation.validatePassword(password))) {
+        } else if (password === confirmPassword && (formValidation.vallidateName(name) && formValidation.validateEmail(email) && formValidation.validatePhoneNumber(phone) && formValidation.validatePassword(password))) {
             const HASHED_PASSWORD = await hashingService.hashPassword(password)
             await saveToDatabaseService.saveSignupFormData({ name: name, email: email, phone: phone, password: HASHED_PASSWORD })
             res.json({
