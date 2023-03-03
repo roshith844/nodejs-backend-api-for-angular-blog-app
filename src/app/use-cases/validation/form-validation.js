@@ -37,9 +37,21 @@ function validatePhoneNumber(phone){
 }
 
 function validatePassword(password) {
+      /* 
+Password should be
+At least 8 characters long
+Must contain at least one uppercase letter
+Must contain at least one lowercase letter
+Must contain at least one number
+Must contain at least one special character (@$!%*?&)
+  */
+const PASSWORD_PATTERN = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/
+
   if (password.length < 2) {
     return false
   } else if (password.length >= 50) {
+    return false
+  }else  if (!PASSWORD_PATTERN.test(password)) {
     return false
   }
   return true
