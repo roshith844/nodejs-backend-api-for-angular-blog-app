@@ -10,7 +10,7 @@ async function getUserDataFromId(userId){
 }
 
 async function saveUserData(data) {
-    await USER_MODEL.create({ name: data.name, email: data.email, password: data.password })
+    await USER_MODEL.create({ name: data.name, email: data.email, phone: data.phone, password: data.password })
 }
 
 async function isEmailExists(email) {

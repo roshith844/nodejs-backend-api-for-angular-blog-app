@@ -23,6 +23,19 @@ function validateEmail(email) {
   return true
 }
 
+function validatePhoneNumber(phone){
+  const PHONE_PATTERN = /^\d{10}$/
+  if (typeof phone !== "string") {
+    return false
+  }
+
+  if (! PHONE_PATTERN.test(phone)) {
+    return false
+  }
+  return true
+
+}
+
 function validatePassword(password) {
   if (password.length < 2) {
     return false
@@ -39,5 +52,5 @@ async function checkUserExistance(email) {
   return false
 }
 module.exports = {
-  validateEmail, validatePassword, vallidateName, checkUserExistance
+  validateEmail, validatePassword, vallidateName, checkUserExistance, validatePhoneNumber
 }

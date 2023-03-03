@@ -33,14 +33,14 @@ module.exports = {
 
     signupUser: async (req, res) => {
 
-        const { name, email, password, confirmPassword } = req.body
+        const { name, email, phone, password, confirmPassword } = req.body
         if ((await formValidation.checkUserExistance(email) == true)) {
             res.json({
                 "success": false
             })
-        } else if (password === confirmPassword && (formValidation.vallidateName(name) && formValidation.validateEmail(email) && formValidation.validatePassword(password))) {
+        } else if (password === confirmPassword && (formValidation.vallidateName(name) && formValidation.validateEmail(email) && validatePhoneNumber(phone) && formValidation.validatePassword(password))) {
             const HASHED_PASSWORD = await hashingService.hashPassword(password)
-            await saveToDatabaseService.saveSignupFormData({ name: name, email: email, password: HASHED_PASSWORD })
+            await saveToDatabaseService.saveSignupFormData({ name: name, email: email, phone: phone, password: HASHED_PASSWORD })
             res.json({
                 "success": true
             })
