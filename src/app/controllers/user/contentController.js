@@ -17,7 +17,7 @@ module.exports = {
 
         if (req.headers.hasOwnProperty('authorization' )) {
             const TOKEN = req.headers.authorization
-            if(!TOKEN){
+            if(TOKEN){
                 const DECODED_TOKEN = decodeJwtToken(TOKEN)
                 if (DECODED_TOKEN != false) {
                     isUserLoggedIn = true
@@ -29,7 +29,7 @@ module.exports = {
 
         // get data from database 
         const BLOG = await blogService.getBlogContent(req.params.slug)
-        if (BLOG == false) {
+        if (BLOG === false) {
             res.json({
                 "success": false
             })
@@ -40,6 +40,7 @@ module.exports = {
                     isFavorite = true
                 }
             }
+
             res.json({
                 "success": true,
                 "data": BLOG,
