@@ -10,6 +10,8 @@ const becomeWriterRoutes = require('./routes/user/become-writer')
 const commonRoutes = require('./routes/common')
 const writerContentRoutes = require('./routes/writer/content')
 require('./database')
+const mongoose = require('mongoose')
+mongoose.set('strictQuery', false);
 
 app.use(cors())
 app.use(bodyParser.urlencoded({ extended: false }));
