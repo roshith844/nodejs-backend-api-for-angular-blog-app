@@ -8,11 +8,11 @@ const POST_SCHEMA = new mongoose.Schema({
     },
     title: String,
     content: String,
-    author: {type: ObjectId},
+    author: { type: ObjectId },
     pageviews: { type: Number, default: 0 },
     tags: [{ type: String, default: 'blog' }],
     likes: { type: Number, default: 0 },
     favorites: { type: Number, default: 0 }
-}, { timestamp: true })
+}, { timestamps: true })
 
 module.exports = mongoose.model('posts', POST_SCHEMA)
