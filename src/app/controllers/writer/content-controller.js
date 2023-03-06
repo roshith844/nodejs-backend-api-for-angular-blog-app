@@ -1,4 +1,5 @@
 const { validateSlug } = require("../../use-cases/validation/validate-slug")
+const WriterGetDataService = require("../../use-cases/writer/get-data/get-blogs")
 const { savePost } = require("../../use-cases/writer/save-to-database/save-blog")
 
 module.exports = {
@@ -30,6 +31,20 @@ module.exports = {
         if (RESPONSE === true) {
             res.json({ "success": true })
             res.end()
+        } else {
+            res.json({ "success": false })
+        }
+
+    },
+
+    getAllBlogs:async  (req, res) => {
+        console.log("getting all posts")
+        const ALL_BLOGS = await WriterGetDataService.getAllBlogs()
+        if (ALL_BLOGS) {
+            res.json({
+                "success": true,
+                "data" : ALL_BLOGS
+            })
         } else {
             res.json({ "success": false })
         }

@@ -12,7 +12,8 @@ const POST_SCHEMA = new mongoose.Schema({
     pageviews: { type: Number, default: 0 },
     tags: [{ type: String, default: 'blog' }],
     likes: { type: Number, default: 0 },
-    favorites: { type: Number, default: 0 }
+    favorites: { type: Number, default: 0 },
+    status: {type: String, default: 'published'}
 }, { timestamps: true })
 
 module.exports = mongoose.model('posts', POST_SCHEMA)
