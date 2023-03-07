@@ -8,7 +8,6 @@ async function getBlogCards() {
     
         BLOG_CONTENT[i].content = BLOG_CONTENT[i].content.substr(0, 200)
     }
-
     return BLOG_CONTENT
 }
 
@@ -27,7 +26,6 @@ async function getBlogCardFromArticleId(articleIdArray) {
     for(let i = 0 ; i < articleIdArray.length; i++){
         let BLOG = await blogContentService.getBlogFormDatabase(articleIdArray[i])
         if (BLOG != null) {
-
             BLOG.content = BLOG.content.substr(0, 200)
             BLOG_CARDS.push(BLOG)
         }
@@ -35,6 +33,11 @@ async function getBlogCardFromArticleId(articleIdArray) {
         return BLOG_CARDS
 }
 
+async function getBlogFromArticleId(articleId){
+ if(articleId === null || articleId =='') return false
+ const BLOG = await blogContentService.getBlogFormDatabase(articleId)
+ if(BLOG === null || !BLOG) return false
+ return BLOG
+}
 
-
-module.exports = { getBlogCards, getBlogContent, getBlogCardFromArticleId }
+module.exports = { getBlogCards, getBlogContent, getBlogCardFromArticleId, getBlogFromArticleId }

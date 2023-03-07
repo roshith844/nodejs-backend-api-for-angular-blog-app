@@ -1,5 +1,3 @@
-const mongoose = require('mongoose')
-
 const POST_MODEL = require('../models/post-schema')
 
 async function getLatestBlogs(numberOfBlogs) {
@@ -29,9 +27,6 @@ async function getBlogContent(slug) {
   },
   { $unwind: "$author_details" }
   ])
-
-  // await POST_MODEL.aggregate([{ $match: { slug: slug } }])
-
 }
 
 async function getBlogFormDatabase(articleId) {
@@ -39,6 +34,16 @@ async function getBlogFormDatabase(articleId) {
 }
 
 async function getBlogsFromDatabase() {
- return  await POST_MODEL.find({})
+  return await POST_MODEL.find({})
 }
-module.exports = { getLatestBlogs, getBlogContent, getBlogFormDatabase, getBlogsFromDatabase }
+
+async function updateBlogOnDatabase(articleId, title, slug, content) {
+  const RESPONSE = await POST_MODEL.updateOne({ _id: articleId }, { $set: { title: title, slug: slug, content: content } })
+  if (RESPONSE.acknowledged === true) {
+    return true
+  } else {
+    return false
+  }
+}
+
+module.exports = { getLatestBlogs, getBlogContent, getBlogFormDatabase, getBlogsFromDatabase, updateBlogOnDatabase }

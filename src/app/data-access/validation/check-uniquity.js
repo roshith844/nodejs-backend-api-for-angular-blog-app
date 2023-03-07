@@ -1,4 +1,3 @@
-const mongoose = require('mongoose')
 const POST_MODEL = require('./../../models/post-schema')
 
 async function isUniqueSlug(slug) {
@@ -9,8 +8,8 @@ async function isUniqueSlug(slug) {
     } else if (RESPONSE.hasOwnProperty('_id')) {
         return false
     }
-
 }
+
 module.exports = {
     isUniqueSlug
 }
