@@ -1,3 +1,4 @@
+const { deleteBlogbyId } = require("../../use-cases/delete-data/delete-blog")
 const { getBlogContent, getBlogFromArticleId } = require("../../use-cases/get-data-from-database/get-blog")
 const { stringToObjectId } = require("../../use-cases/modify-data/change-format")
 const { isArticleIdExists } = require("../../use-cases/validation/validate-id")
@@ -55,10 +56,8 @@ module.exports = {
     },
 
     getBlog: async (req, res) => {
-        // console.log("statilng")
         const SLUG = req.params.slug
         const ARTICLE_ID = stringToObjectId(SLUG)
-        // console.log(ARTICLE_ID)
         const BLOG = await getBlogFromArticleId(ARTICLE_ID)
         if (BLOG) {
             res.json({
@@ -74,7 +73,7 @@ module.exports = {
     },
     updateBlog: async (req, res) => {
         const { articleId, title, slug, content } = req.body
-        console.log(req.body)
+
         // Checks blog exists
         const isExists = await isArticleIdExists(articleId)
         if (!isExists) {
@@ -82,15 +81,22 @@ module.exports = {
             res.end()
             return
         }
-        //  update the blog of id with the given contents
-      if(await  findbyIdAndUpdateBlog(articleId, title, slug, content)){
-        res.json({
-            "success": true 
-        })
-      }else{
-        res.json({
-            "success": false
-        })
-      }
+
+        //  Updates the blog of id with the given contents
+        if (await findbyIdAndUpdateBlog(articleId, title, slug, content)) {
+            res.json({
+                "success": true
+            })
+        } else {
+            res.json({
+                "success": false
+            })
+        }
+    },
+
+    deleteBlog: async (req, res) => {
+        const BLOG_ID = req.params.id
+        const IS_DELETED = await deleteBlogbyId(BLOG_ID)
+        res.json({ "success": IS_DELETED })
     }
 }

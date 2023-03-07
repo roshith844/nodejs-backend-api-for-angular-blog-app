@@ -26,7 +26,6 @@ async function createFavoritesAndAdd(userId, articleId) {
 }
 
 async function checkArticleIdExistsOnFavorites(userId, articleId) {
-    // match unwind and find count , if count is 1 return true
     const USER_ID_AS_OBJECT_ID = mongoose.Types.ObjectId(userId)
     const ARTICLE_ID = articleId.toString()
 
