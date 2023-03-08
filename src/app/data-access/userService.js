@@ -27,4 +27,8 @@ async function updateRole(userId, role) {
     }
 }
 
-module.exports = { getUserDataFromEmail, getUserDataFromId, saveUserData, isEmailExists, updateRole }
+async function editProfileOnDataBase(userId, name, email, phone){
+     return await USER_MODEL.updateOne({ _id: userId }, {name: name, email: email, phone: phone} )    
+}
+
+module.exports = { getUserDataFromEmail, getUserDataFromId, saveUserData, isEmailExists, updateRole, editProfileOnDataBase }

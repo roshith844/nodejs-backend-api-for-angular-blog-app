@@ -1,4 +1,5 @@
 const { getUserRole, getUserDetails } = require("../use-cases/get-data-from-database/get-user-details")
+const { editProfilebyId } = require("../use-cases/save-to-database/update-user-data")
 const tokenManagement = require("../use-cases/token/jwt-token-management")
 // decodeJwtToken
 module.exports = {
@@ -20,5 +21,15 @@ module.exports = {
                 "role": USER_DETAILS.role
             })
         }
+    },
+
+    editProfile: async (req, res)=>{
+        const USER_ID  = req.user
+        const {name, email, phone} = req.body
+       if(await  editProfilebyId(USER_ID, name, email, phone) === true ){
+        res.json({"success": true })
+       }else{
+        res.json({"success": false})
+       }
     }
 }

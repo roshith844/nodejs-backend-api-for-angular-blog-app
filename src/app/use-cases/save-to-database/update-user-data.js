@@ -1,4 +1,4 @@
-const { updateRole } = require("../../data-access/userService")
+const { updateRole, editProfileOnDataBase } = require("../../data-access/userService")
 
 async function updateRoleToWriter(userId) {
     const ROLE = 'writer'
@@ -10,4 +10,10 @@ async function updateRoleToWriter(userId) {
     }
 }
 
-module.exports = { updateRoleToWriter }
+async function editProfilebyId(userId, name, email, phone){
+  const RESPONSE =  await editProfileOnDataBase(userId,name, email, phone)
+  if(RESPONSE.acknowledged) return true
+  return false
+}
+
+module.exports = { updateRoleToWriter, editProfilebyId }
