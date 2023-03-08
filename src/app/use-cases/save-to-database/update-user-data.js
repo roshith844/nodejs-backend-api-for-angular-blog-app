@@ -10,10 +10,10 @@ async function updateRoleToWriter(userId) {
     }
 }
 
-async function editProfilebyId(userId, name, email, phone){
-  const RESPONSE =  await editProfileOnDataBase(userId,name, email, phone)
-  if(RESPONSE.acknowledged) return true
-  return false
+async function editProfilebyId(userId, name, email, phone) {
+    const RESPONSE = await editProfileOnDataBase(userId, name, email, phone)
+    if (RESPONSE.acknowledged) return true
+    return false
 }
 
 module.exports = { updateRoleToWriter, editProfilebyId }

@@ -23,13 +23,13 @@ module.exports = {
         }
     },
 
-    editProfile: async (req, res)=>{
-        const USER_ID  = req.user
-        const {name, email, phone} = req.body
-       if(await  editProfilebyId(USER_ID, name, email, phone) === true ){
-        res.json({"success": true })
-       }else{
-        res.json({"success": false})
-       }
+    editProfile: async (req, res) => {
+        const USER_ID = req.user
+        const { name, email, phone } = req.body
+        if (await editProfilebyId(USER_ID, name, email, phone) === true) {
+            res.json({ "success": true })
+        } else {
+            res.json({ "success": false })
+        }
     }
 }
