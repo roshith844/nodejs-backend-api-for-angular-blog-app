@@ -31,5 +31,11 @@ module.exports = {
         } else {
             res.json({ "success": false })
         }
+    },
+
+    editProfileImage:  async (req, res) => {
+        console.log('uploading')
+        console.log(req.file)
+        console.log(req.body)
     }
 }
