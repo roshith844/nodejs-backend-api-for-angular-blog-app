@@ -33,7 +33,7 @@ module.exports = {
         }
     },
 
-    editProfileImage:  async (req, res) => {
+    editProfileImage: async (req, res) => {
         console.log('uploading')
         console.log(req.file)
         console.log(req.body)

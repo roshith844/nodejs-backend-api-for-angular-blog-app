@@ -13,8 +13,13 @@ const POST_SCHEMA = new mongoose.Schema({
     tags: [{ type: String, default: 'blog' }],
     likes: { type: Number, default: 0 },
     favorites: { type: Number, default: 0 },
-    status: {type: String, default: 'published'},
-    deleted: {type: Boolean, default: false}
+    status: { type: String, default: 'published' },
+    deleted: { type: Boolean, default: false },
+    comments: [{
+        userId: { type: String },
+        message: { type: String },
+        created: { type: Date, default: Date.now() }
+    }]
 }, { timestamps: true })
 
 module.exports = mongoose.model('posts', POST_SCHEMA)

@@ -10,6 +10,7 @@ const becomeWriterRoutes = require('./routes/user/become-writer')
 const userProfileRoutes = require('./routes/user/profile')
 const writerContentRoutes = require('./routes/writer/content')
 const writerProfileRoutes = require('./routes/writer/profile')
+const commentRoutes = require('./routes/user/interactions/comment')
 require('./database')
 const mongoose = require('mongoose')
 mongoose.set('strictQuery', false);
@@ -25,6 +26,7 @@ app.use('/writer', becomeWriterRoutes)
 app.use('/user/profile', userProfileRoutes)
 app.use('/writer/blog', writerContentRoutes)
 app.use('/writer/profile', writerProfileRoutes)
+app.use('/blog/comments', commentRoutes)
 
 app.listen(3000, () => {
     console.log(`app listening on port 3000`)
