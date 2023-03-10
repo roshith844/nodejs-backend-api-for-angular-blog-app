@@ -9,7 +9,7 @@ async function addCommentbyBlogId(blogId, userId, comment) {
 async function getCommentsByBlogId(blogId) {
     const BLOG_ID_AS_OBJECT_ID = changeToMongooseObjectId(blogId)
     const RESPONSE = await getCommentsFromDatabase(BLOG_ID_AS_OBJECT_ID)
-    if (RESPONSE) return RESPONSE[0].comments
+    if (RESPONSE) return RESPONSE
     return false
 }
 

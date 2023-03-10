@@ -16,7 +16,7 @@ const POST_SCHEMA = new mongoose.Schema({
     status: { type: String, default: 'published' },
     deleted: { type: Boolean, default: false },
     comments: [{
-        userId: { type: String },
+        userId: { type:  ObjectId  },
         message: { type: String },
         created: { type: Date, default: Date.now() }
     }]

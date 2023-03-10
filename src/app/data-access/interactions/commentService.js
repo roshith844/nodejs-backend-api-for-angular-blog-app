@@ -1,3 +1,4 @@
+const { response } = require('express')
 const POST_MODEL = require('./../../models/post-schema')
 
 async function addCommentToDatabase(blogId, userId, comment) {
@@ -5,7 +6,15 @@ async function addCommentToDatabase(blogId, userId, comment) {
     return RESPONSE.acknowledged
 }
 async function getCommentsFromDatabase(blogId) {
-    const RESPONSE = await POST_MODEL.aggregate([{ $match: { _id: blogId } }, { $project: { _id: 0, comments: 1 } }, { $sort: { created: -1 } }])
+    const RESPONSE = await POST_MODEL.aggregate([{ $match: { _id: blogId } }, { $project: { _id: 0, comments: 1 } }, { $unwind: "$comments" },
+    {
+        $lookup: {
+            from: "users",
+            localField: "comments.userId",
+            foreignField: "_id",
+            as: "userDetails"
+        }
+    }, { $unwind: "$userDetails" }, { $project: { 'userDetails.name': 1, comments: 1 } }])
     return RESPONSE
 }
 
