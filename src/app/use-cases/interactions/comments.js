@@ -2,7 +2,7 @@ const { addCommentToDatabase, getCommentsFromDatabase } = require("../../data-ac
 const { changeToMongooseObjectId } = require("../../data-access/modify-data/mongoose-service")
 async function addCommentbyBlogId(blogId, userId, comment) {
     const RESPONSE = await addCommentToDatabase(blogId, userId, comment)
-    if (RESPONSE === true) return true
+    if (RESPONSE != false) return RESPONSE
     return false
 }
 

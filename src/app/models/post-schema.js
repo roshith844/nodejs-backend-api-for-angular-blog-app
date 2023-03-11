@@ -18,7 +18,8 @@ const POST_SCHEMA = new mongoose.Schema({
     comments: [{
         userId: { type:  ObjectId  },
         message: { type: String },
-        created: { type: Date, default: Date.now() }
+        created: { type: Date, default: Date.now() },
+        isDeleted: {type: Boolean, default: false}
     }]
 }, { timestamps: true })
 
