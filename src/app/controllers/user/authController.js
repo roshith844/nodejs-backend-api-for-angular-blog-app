@@ -51,15 +51,18 @@ module.exports = {
     getUserStatus: async (req, res) => {
         let isLoggedIn = false
         let userId
+        let nameOfUser = 'unknown'
 
         // Decodes token 
         if (req.headers.hasOwnProperty('authorization')) {
             if (req.headers.authorization != 'null') {
                 const TOKEN = req.headers.authorization
-                const DECODED_TOKEN = tokenManagement.decodeJwtToken (TOKEN)
+                const DECODED_TOKEN = tokenManagement.decodeJwtToken(TOKEN)
+                console.log(DECODED_TOKEN)
                 if (DECODED_TOKEN != false) {
                     isLoggedIn = true
                     userId = DECODED_TOKEN.id
+                    
                 }
             }
 
@@ -75,12 +78,15 @@ module.exports = {
         }
 
         // if user, gets userRole form id
-        const USER_ROLE = await getUserRole(userId)
+        const USER_INFO = await getUserRole(userId)
+console.log("authController")
+        console.log(USER_INFO)
 
         // if token valid set userloggin true
-        if (userId != null || USER_ROLE != null) {
+        if (userId != null || USER_INFO != null) {
             res.json({
-                "role": USER_ROLE,
+                "role": USER_INFO.role,
+                "name": USER_INFO.name,
                 "loggedIn": isLoggedIn,
             })
         } else {

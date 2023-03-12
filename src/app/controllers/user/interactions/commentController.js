@@ -8,7 +8,6 @@ module.exports = {
         const { blogId, comment } = req.body
         const RESPONSE = await addCommentbyBlogId(blogId, USER_ID, comment)
         if (RESPONSE != false) res.json({ "success": true, "data": RESPONSE })
-
     },
     getAllComments: async (req, res) => {
         const BLOG_ID = req.params.id
