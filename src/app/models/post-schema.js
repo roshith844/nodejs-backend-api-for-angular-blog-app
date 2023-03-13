@@ -13,13 +13,13 @@ const POST_SCHEMA = new mongoose.Schema({
     tags: [{ type: String, default: 'blog' }],
     likes: { type: Number, default: 0 },
     favorites: { type: Number, default: 0 },
-    status: { type: String, default: 'published' },
+    status: { type: String, default: 'pending' },
     deleted: { type: Boolean, default: false },
     comments: [{
-        userId: { type:  ObjectId  },
+        userId: { type: ObjectId },
         message: { type: String },
         created: { type: Date, default: Date.now() },
-        isDeleted: {type: Boolean, default: false}
+        isDeleted: { type: Boolean, default: false }
     }]
 }, { timestamps: true })
 
