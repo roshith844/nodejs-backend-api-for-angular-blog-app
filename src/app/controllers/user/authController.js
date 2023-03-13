@@ -62,7 +62,6 @@ module.exports = {
                 if (DECODED_TOKEN != false) {
                     isLoggedIn = true
                     userId = DECODED_TOKEN.id
-                    
                 }
             }
 
@@ -79,8 +78,6 @@ module.exports = {
 
         // if user, gets userRole form id
         const USER_INFO = await getUserRole(userId)
-console.log("authController")
-        console.log(USER_INFO)
 
         // if token valid set userloggin true
         if (userId != null || USER_INFO != null) {
