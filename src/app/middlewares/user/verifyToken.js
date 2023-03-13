@@ -16,7 +16,6 @@ module.exports = {
     try {
       const DECODED = jwt.verify(TOKEN.split(' ')[1], ACCESS_TOKEN_SECRET);
       if (DECODED) {
-        console.log(req.user)
         req.user = DECODED.id
         next();
       } else {
