@@ -31,4 +31,31 @@ module.exports = {
       });
     }
   },
+  verifyAdmin: (req, res, next) => {
+    const TOKEN = req.headers.authorization
+    if (!TOKEN) {
+      return res.status(400).send({
+        token: false,
+        message: 'No token provided',
+      });
+    }
+
+    try {
+      const DECODED = jwt.verify(TOKEN.split(' ')[1], ACCESS_TOKEN_SECRET);
+      if (DECODED) {
+        req.admin = DECODED.id
+        next();
+      } else {
+        return res.status(400).send({
+          token: false,
+          message: 'invalid token',
+        });
+      }
+    } catch (error) {
+      return res.status(400).send({
+        token: false,
+        message: 'invalid token',
+      });
+    }
+  },
 }

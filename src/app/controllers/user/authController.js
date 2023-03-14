@@ -58,7 +58,6 @@ module.exports = {
             if (req.headers.authorization != 'null') {
                 const TOKEN = req.headers.authorization
                 const DECODED_TOKEN = tokenManagement.decodeJwtToken(TOKEN)
-                console.log(DECODED_TOKEN)
                 if (DECODED_TOKEN != false) {
                     isLoggedIn = true
                     userId = DECODED_TOKEN.id
