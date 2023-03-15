@@ -39,9 +39,8 @@ module.exports = {
         message: 'No token provided',
       });
     }
-
     try {
-      const DECODED = jwt.verify(TOKEN.split(' ')[1], ACCESS_TOKEN_SECRET);
+      const DECODED = jwt.verify(TOKEN.split(' ')[1], ACCESS_TOKEN_SECRET)
       if (DECODED) {
         req.admin = DECODED.id
         next();
