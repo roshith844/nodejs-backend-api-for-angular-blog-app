@@ -1,4 +1,4 @@
-const { rawListeners } = require("../../../models/post-schema");
+const POST_MODEL = require("../../../models/post-schema");
 const { softDeleteComment } = require("../../../use-cases/delete-data/delete-comments");
 const { addCommentbyBlogId, getCommentsByBlogId } = require("../../../use-cases/interactions/comments");
 
@@ -28,7 +28,7 @@ module.exports = {
         const USER_ID = req.user
         const BLOG_ID = req.params.blogId
         const COMMENT_ID = req.params.commentId
-        if (await softDeleteComment(USER_ID, BLOG_ID, COMMENT_ID) === true) {
+        if (await softDeleteComment(BLOG_ID, COMMENT_ID) === true) {
             res.json({ "success": true })
         } else {
             res.json({ "success": false })

@@ -1,7 +1,7 @@
 const { softDeleteOnDatabase } = require("../../data-access/interactions/commentService")
 
-async function softDeleteComment(userId, blogId, commentId){
-  if(await softDeleteOnDatabase (userId, blogId, commentId) === true) return true
+async function softDeleteComment( blogId, commentId){
+  if(await softDeleteOnDatabase ( blogId, commentId) === true) return true
   return false
 }
 

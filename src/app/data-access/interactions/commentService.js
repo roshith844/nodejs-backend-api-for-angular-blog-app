@@ -21,13 +21,12 @@ async function getCommentsFromDatabase(blogId) {
     return RESPONSE
 }
 
-async function softDeleteOnDatabase(userId, blogId, commentId) {
+async function softDeleteOnDatabase( blogId, commentId) {
     const RESPONSE = await POST_MODEL.updateOne({
         _id: blogId,
         comments: {
             $elemMatch: {
                 _id: commentId,
-                userId: userId
             }
         }
     },

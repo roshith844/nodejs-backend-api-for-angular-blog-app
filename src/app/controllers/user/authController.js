@@ -20,7 +20,11 @@ module.exports = {
         const VERIFICATION_SUCCESS = await formDataVerificationService.verifyUser(email, password)
         const USER_ID = await getDocumentId(email)
         if (VERIFICATION_SUCCESS) {
+
             const USER_DETAILS = { "id": USER_ID, "email": email }
+
+            if (USER_DETAILS.status === 'blocked') return res.json({ "success": false, "message": "user Blocked" })
+
             const TOKENS = jwtTokenGenerationService.generateJwtTokens(USER_DETAILS)
             res.json(TOKENS)
 

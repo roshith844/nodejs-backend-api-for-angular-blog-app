@@ -13,6 +13,9 @@ const writerContentRoutes = require('./routes/writer/content')
 const writerProfileRoutes = require('./routes/writer/profile')
 const commentRoutes = require('./routes/user/interactions/comment')
 const adminPostManagementRoutes = require('./routes/admin/post-management')
+const adminCommentManagementRoutes = require('./routes/admin/comment-management')
+const adminUserManagementRoutes = require('./routes/admin/user-management')
+
 require('./database')
 const mongoose = require('mongoose')
 mongoose.set('strictQuery', false);
@@ -23,6 +26,8 @@ app.use(bodyParser.json());
 app.use('/', userAuthRoutes)
 app.use('/admin', adminAuthRoutes)
 app.use('/admin/post', adminPostManagementRoutes)
+app.use('/admin/comment', adminCommentManagementRoutes)
+app.use('/admin/user', adminUserManagementRoutes)
 app.use('/blog', contentRoutes)
 app.use('/', interactionRoutes)
 app.use('/', statisticsRoutes)
