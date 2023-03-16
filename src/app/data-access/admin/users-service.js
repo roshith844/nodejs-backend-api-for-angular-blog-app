@@ -13,7 +13,7 @@ async function changeUserStatusToActive(userId) {
 }
 
 async function getUserDetailsFromDatabase() {
-    const RESPONSE = await USER_MODEL.find({})
+    const RESPONSE = await USER_MODEL.find({role: 'user'})
     if (RESPONSE) return RESPONSE
     return false
 }
