@@ -28,4 +28,19 @@ async function changeStatusToRejected(blogId) {
     return false
 }
 
-module.exports = { getAllPostsWithAuthorDetails, changeStatusToPublished, changeStatusToRejected }
+async function getBlogStatusCountFromDatabase(){
+    const RESPONSE =  await POST_MODEL.aggregate([
+        {
+            $group: {
+                _id: '$status',
+                count: { $sum: 1 }
+            }
+        }
+    ])
+
+    if(RESPONSE.length === 0) return false
+    return RESPONSE
+
+}
+
+module.exports = { getAllPostsWithAuthorDetails, changeStatusToPublished, changeStatusToRejected, getBlogStatusCountFromDatabase }
