@@ -19,7 +19,7 @@ const adminCreatorManagementRoutes = require('./routes/admin/creator-management'
 
 require('./database')
 const mongoose = require('mongoose')
-mongoose.set('strictQuery', false);
+mongoose.set('strictQuery', false)
 
 app.use(cors())
 app.use(bodyParser.urlencoded({ extended: false }))

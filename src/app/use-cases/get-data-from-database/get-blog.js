@@ -1,3 +1,4 @@
+const { changeToMongooseObjectId } = require('../../data-access/modify-data/mongoose-service')
 const blogContentService = require('./../../data-access/blog-content-service')
 
 async function getBlogCards() {
@@ -5,7 +6,7 @@ async function getBlogCards() {
 
     // Takes only first 200 words from content
     for (let i = 0; i < BLOG_CONTENT.length; i++) {
-    
+
         BLOG_CONTENT[i].content = BLOG_CONTENT[i].content.substr(0, 200)
     }
     return BLOG_CONTENT
@@ -22,22 +23,25 @@ async function getBlogContent(slug) {
 
 async function getBlogCardFromArticleId(articleIdArray) {
     let BLOG_CARDS = []
+    for (let i = 0; i < articleIdArray.length; i++) {
+        let ARTICLE_ID_AS_OBJECT_ID = changeToMongooseObjectId(articleIdArray[i])
+        let BLOG = await blogContentService.getBlogFormId(ARTICLE_ID_AS_OBJECT_ID)
 
-    for(let i = 0 ; i < articleIdArray.length; i++){
-        let BLOG = await blogContentService.getBlogFormDatabase(articleIdArray[i])
         if (BLOG != null) {
-            BLOG.content = BLOG.content.substr(0, 200)
+            if (BLOG.content.length > 200) {
+                BLOG.content = BLOG.content.substr(0, 200)
+            }
             BLOG_CARDS.push(BLOG)
         }
     }
-        return BLOG_CARDS
+    return BLOG_CARDS
 }
 
-async function getBlogFromArticleId(articleId){
- if(articleId === null || articleId =='') return false
- const BLOG = await blogContentService.getBlogFormDatabase(articleId)
- if(BLOG === null || !BLOG) return false
- return BLOG
+async function getBlogFromArticleId(articleId) {
+    if (articleId === null || articleId == '') return false
+    const BLOG = await blogContentService.getBlogFormDatabase(articleId)
+    if (BLOG === null || !BLOG) return false
+    return BLOG
 }
 
 module.exports = { getBlogCards, getBlogContent, getBlogCardFromArticleId, getBlogFromArticleId }

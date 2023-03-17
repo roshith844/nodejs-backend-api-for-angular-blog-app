@@ -24,14 +24,14 @@ const fileFilter = (req, file, cb) => {
   return cb(null, true);
 };
 
-const upload = multer({ storage, fileFilter });
+const upload = multer({ storage, limits: { fileSize: 1024 * 1024 } , fileFilter});
 
 module.exports = (req, res, next) => {
   upload.single("file")(req, res, (err) => {
     if (err) {
-       console.log(err)
-     
-        return res.send({ err: "Selected file is not an image" });
+      console.log(err)
+
+      return res.send({ err: "Selected file is not an image" });
     }
     return next();
   });

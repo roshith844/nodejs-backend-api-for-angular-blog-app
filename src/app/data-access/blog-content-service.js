@@ -31,6 +31,25 @@ async function getBlogContent(slug) {
   ])
 }
 
+async function getBlogFormId(blogId) {
+  const RESPONSE = await POST_MODEL.aggregate([
+    { $match: { deleted: false, _id: blogId } },
+    {
+      $lookup:
+      {
+        from: "users",
+        localField: "author",
+        foreignField: "_id",
+        as: "author_details"
+      }
+    },
+    { $unwind: "$author_details" }])
+
+  if (RESPONSE.length !== 0) return RESPONSE[0]
+
+  return false
+}
+
 async function getBlogFormDatabase(articleId) {
   return await POST_MODEL.findOne({ _id: articleId, deleted: false })
 }
@@ -52,4 +71,4 @@ async function softDeleteBlogFromDatabase(blogId) {
   return await POST_MODEL.updateOne({ _id: blogId }, { $set: { deleted: true } })
 }
 
-module.exports = { getLatestBlogs, getBlogContent, getBlogFormDatabase, getBlogsFromDatabase, updateBlogOnDatabase, softDeleteBlogFromDatabase }
+module.exports = { getLatestBlogs, getBlogContent, getBlogFormDatabase, getBlogsFromDatabase, updateBlogOnDatabase, softDeleteBlogFromDatabase, getBlogFormId }
