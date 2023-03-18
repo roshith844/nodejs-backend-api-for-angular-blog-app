@@ -55,7 +55,11 @@ async function getBlogFormDatabase(articleId) {
 }
 
 async function getBlogsFromDatabase() {
-  return await POST_MODEL.find({ deleted: false })
+  return await POST_MODEL.aggregate([
+    {
+      $match: { deleted: false }
+    }
+  ])
 }
 
 async function updateBlogOnDatabase(articleId, title, slug, content) {
