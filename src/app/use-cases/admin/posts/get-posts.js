@@ -1,4 +1,5 @@
-const { getAllPostsWithAuthorDetails, getBlogStatusCountFromDatabase } = require("../../../data-access/admin/posts-service")
+const { getAllPostsWithAuthorDetails, getBlogStatusCountFromDatabase, getBlogStatusCountByIdFromDatabase } = require("../../../data-access/admin/posts-service")
+const { changeToMongooseObjectId } = require("../../../data-access/modify-data/mongoose-service")
 
 async function getAllPosts() {
   const RESPONSE = await getAllPostsWithAuthorDetails()
@@ -19,4 +20,18 @@ async function getBlogStatusCount() {
   return statusCount
 }
 
-module.exports = { getAllPosts, getBlogStatusCount }
+async function getBlogStatusCountbyUserId(userId) {
+  let statusCount = {}
+   const USER_ID =  changeToMongooseObjectId(userId)
+  let response = await getBlogStatusCountByIdFromDatabase(USER_ID)
+
+  if (!response) return false
+  response.forEach((item) => {
+    statusCount[item._id] = item.count
+  })
+
+  return statusCount
+}
+
+// 
+module.exports = { getAllPosts, getBlogStatusCount,getBlogStatusCountbyUserId }
