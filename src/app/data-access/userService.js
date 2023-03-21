@@ -5,8 +5,16 @@ async function getUserDataFromEmail(email) {
     return await USER_MODEL.findOne({ "email": email })
 }
 
+async function getAdminDataFromId(adminId) {
+    return await USER_MODEL.findOne({ "_id": adminId})
+}
+
 async function getUserDataFromId(userId) {
     return await USER_MODEL.findOne({ "_id": userId })
+}
+
+async function getAdminDataFromId(adminId) {
+    return await USER_MODEL.findOne({ "_id": adminId })
 }
 
 async function saveUserData(data) {
@@ -31,4 +39,4 @@ async function editProfileOnDataBase(userId, name, email, phone) {
     return await USER_MODEL.updateOne({ _id: userId }, { name: name, email: email, phone: phone })
 }
 
-module.exports = { getUserDataFromEmail, getUserDataFromId, saveUserData, isEmailExists, updateRole, editProfileOnDataBase }
+module.exports = { getUserDataFromEmail, getUserDataFromId, saveUserData, isEmailExists, updateRole, editProfileOnDataBase,getAdminDataFromId }

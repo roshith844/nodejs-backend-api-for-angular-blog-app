@@ -11,7 +11,7 @@ async function getDocumentId(email) {
 async function getUserRole(userId) {
     if (userId == null) return false
     const USER_DETAILS = await userService.getUserDataFromId(userId)
-    if (USER_DETAILS != null ) {
+    if (USER_DETAILS != null) {
         return { name: USER_DETAILS.name, role: USER_DETAILS.role }
     } else {
         return false
@@ -24,4 +24,10 @@ async function getUserDetails(userId) {
     return USER_DETAILS
 }
 
-module.exports = { getDocumentId, getUserRole, getUserDetails }
+async function getAdminDetails(adminId) {
+    const ADMIN_DETAILS = await userService.getAdminDataFromId(adminId)
+    if (ADMIN_DETAILS === null || ADMIN_DETAILS.length === 0) return false
+    return ADMIN_DETAILS
+}
+
+module.exports = { getDocumentId, getUserRole, getUserDetails, getAdminDetails }
