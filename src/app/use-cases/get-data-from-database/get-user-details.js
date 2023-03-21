@@ -11,7 +11,7 @@ async function getDocumentId(email) {
 async function getUserRole(userId) {
     if (userId == null) return false
     const USER_DETAILS = await userService.getUserDataFromId(userId)
-    if (USER_DETAILS != null || USER_DETAILS.length !== 0) {
+    if (USER_DETAILS != null ) {
         return { name: USER_DETAILS.name, role: USER_DETAILS.role }
     } else {
         return false
