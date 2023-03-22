@@ -1,8 +1,8 @@
 const express = require('express')
 const router = express.Router()
 const writerDashboardController = require('./../../controllers/writer/dashboard-controller')
-const verifyTokenMiddleware = require('./../../middlewares/user/verifyToken')
+const verifyToken = require('./../../middlewares/token/verify-token')
 
-router.get( '/', verifyTokenMiddleware.verifyUser, writerDashboardController.getStatistics )
+router.get('/', verifyToken.verifyWriter, writerDashboardController.getStatistics)
 
 module.exports = router

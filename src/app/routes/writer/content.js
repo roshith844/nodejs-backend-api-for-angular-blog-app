@@ -1,12 +1,12 @@
 const express = require('express')
 const router = express.Router()
 const contentController = require('./../../controllers/writer/content-controller')
-const verifyTokenMiddleware = require('./../../middlewares/user/verifyToken')
+const verifyToken = require('./../../middlewares/token/verify-token')
 
-router.post('/create', verifyTokenMiddleware.verifyUser, contentController.postContent)
-router.get('/all', verifyTokenMiddleware.verifyUser, contentController.getAllBlogs)
-router.get('/get/:slug', verifyTokenMiddleware.verifyUser, contentController.getBlog)
-router.patch('/update', verifyTokenMiddleware.verifyUser, contentController.updateBlog)
-router.delete('/delete/:id', verifyTokenMiddleware.verifyUser, contentController.deleteBlog)
+router.post('/create', verifyToken.verifyWriter, contentController.postContent)
+router.get('/all', verifyToken.verifyWriter, contentController.getAllBlogs)
+router.get('/get/:slug', verifyToken.verifyWriter, contentController.getBlog)
+router.patch('/update', verifyToken.verifyWriter, contentController.updateBlog)
+router.delete('/delete/:id', verifyToken.verifyWriter, contentController.deleteBlog)
 
 module.exports = router

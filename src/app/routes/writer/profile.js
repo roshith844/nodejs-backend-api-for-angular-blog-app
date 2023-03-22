@@ -1,8 +1,8 @@
 const express = require('express')
 const router = express.Router()
 const profileController = require('../../controllers/profileController')
-const verifyTokenMiddleware = require('../../middlewares/user/verifyToken')
+const verifyToken = require('./../../middlewares/token/verify-token')
 
-router.get('/details', verifyTokenMiddleware.verifyUser, profileController.getProfile )
+router.get('/details', verifyToken.verifyWriter, profileController.getProfile)
 
 module.exports = router
