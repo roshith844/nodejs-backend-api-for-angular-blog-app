@@ -62,6 +62,14 @@ async function getBlogsFromDatabase() {
   ])
 }
 
+async function getBlogsOfWriterFromDatabase(writerId) {
+  return await POST_MODEL.aggregate([
+    {
+      $match: { author: writerId, deleted: false }
+    }
+  ])
+}
+
 async function updateBlogOnDatabase(articleId, title, slug, content) {
   const RESPONSE = await POST_MODEL.updateOne({ _id: articleId, deleted: false }, { $set: { title: title, slug: slug, content: content } })
   if (RESPONSE.acknowledged === true) {
@@ -75,4 +83,4 @@ async function softDeleteBlogFromDatabase(blogId) {
   return await POST_MODEL.updateOne({ _id: blogId }, { $set: { deleted: true } })
 }
 
-module.exports = { getLatestBlogs, getBlogContent, getBlogFormDatabase, getBlogsFromDatabase, updateBlogOnDatabase, softDeleteBlogFromDatabase, getBlogFormId }
+module.exports = { getLatestBlogs, getBlogContent, getBlogFormDatabase, getBlogsFromDatabase, updateBlogOnDatabase, softDeleteBlogFromDatabase, getBlogFormId, getBlogsOfWriterFromDatabase }

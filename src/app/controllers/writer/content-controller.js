@@ -43,7 +43,8 @@ module.exports = {
     },
 
     getAllBlogs: async (req, res) => {
-        const ALL_BLOGS = await WriterGetDataService.getAllBlogs()
+        const WRITER_ID = req.user
+        const ALL_BLOGS = await WriterGetDataService.getAllBlogs(WRITER_ID)
         if (ALL_BLOGS) {
             res.json({
                 "success": true,

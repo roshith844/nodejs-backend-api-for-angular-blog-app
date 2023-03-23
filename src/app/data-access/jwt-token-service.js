@@ -12,7 +12,6 @@ function generateRefreshToken(userDetails) {
 }
 
 function verifyJwtToken(token) {
-    console.log(token)
    return jwt.verify(token.split(' ')[1], ACCESS_TOKEN_SECRET)
 }
 

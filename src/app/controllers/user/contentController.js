@@ -59,7 +59,6 @@ module.exports = {
                     userId = DECODED_TOKEN.id
                 }
             }
-
         }
 
         // get data from database 
