@@ -12,7 +12,12 @@ async function getUserRole(userId) {
     if (userId == null) return false
     const USER_DETAILS = await userService.getUserDataFromId(userId)
     if (USER_DETAILS != null) {
-        return { name: USER_DETAILS.name, role: USER_DETAILS.role, profilePictureUrl: USER_DETAILS.profie_picture_url }
+        return {
+            id: USER_DETAILS._id.toString(),
+            name: USER_DETAILS.name,
+            role: USER_DETAILS.role,
+            profilePictureUrl: USER_DETAILS.profie_picture_url
+        }
     } else {
         return false
     }

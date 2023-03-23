@@ -82,9 +82,10 @@ module.exports = {
         // if user, gets userRole form id
         const USER_INFO = await getUserRole(userId)
 
-        // if token valid set userloggin true
+        // if token valid set userloggin true\
         if (userId != null || USER_INFO != null) {
             res.json({
+                "userId": USER_INFO.id,
                 "role": USER_INFO.role,
                 "name": USER_INFO.name,
                 "image": USER_INFO.profilePictureUrl,
