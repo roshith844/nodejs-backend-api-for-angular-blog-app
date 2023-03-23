@@ -52,9 +52,10 @@ module.exports = {
 
         if (req.headers.hasOwnProperty('authorization')) {
             const TOKEN = req.headers.authorization
-            if (TOKEN) {
+            
+            if (TOKEN !== 'null') {
                 const DECODED_TOKEN = decodeJwtToken(TOKEN)
-                if (DECODED_TOKEN != false) {
+                if (DECODED_TOKEN) {
                     isUserLoggedIn = true
                     userId = DECODED_TOKEN.id
                 }
@@ -68,7 +69,7 @@ module.exports = {
                 "success": false
             })
         } else {
-            if (isUserLoggedIn == true) {
+            if (isUserLoggedIn === true) {
                 const ARTICLE_ID = BLOG._id
                 if (await isArticleIsOnFavorites(userId, ARTICLE_ID) == true) {
                     isFavorite = true

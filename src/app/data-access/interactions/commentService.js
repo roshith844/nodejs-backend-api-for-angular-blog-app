@@ -15,7 +15,7 @@ async function getCommentsFromDatabase(blogId) {
             foreignField: "_id",
             as: "userDetails"
         }
-    }, { $unwind: "$userDetails" }, { $project: { 'userDetails.name': 1, comments: 1 } }, {
+    }, { $unwind: "$userDetails" }, { $project: { 'userDetails.name': 1, 'userDetails.profie_picture_url': 1, comments: 1 } }, {
         $match: { "comments.isDeleted": false }
     }, { $sort: { "comments.created": -1 } }])
     return RESPONSE

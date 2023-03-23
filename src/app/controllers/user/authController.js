@@ -87,6 +87,7 @@ module.exports = {
             res.json({
                 "role": USER_INFO.role,
                 "name": USER_INFO.name,
+                "image": USER_INFO.profilePictureUrl,
                 "loggedIn": isLoggedIn,
             })
         } else {

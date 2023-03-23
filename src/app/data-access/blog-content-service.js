@@ -2,7 +2,7 @@ const POST_MODEL = require('../models/post-schema')
 
 async function getLatestBlogs(numberOfBlogs) {
   return await POST_MODEL.aggregate([
-    { $match: { deleted: false } },
+    { $match: { deleted: false, status: 'published' } },
     {
       $lookup:
       {

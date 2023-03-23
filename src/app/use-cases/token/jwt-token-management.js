@@ -21,7 +21,7 @@ function getUserEmailFromToken(token) {
 }
 
 function decodeJwtToken(token) {
-if(token === null ) return false
+if(token === null || token === 'null' ) return false
     const DECODED_TOKEN = jwtTokenService.verifyJwtToken(token)
     if (DECODED_TOKEN) {
         return DECODED_TOKEN
