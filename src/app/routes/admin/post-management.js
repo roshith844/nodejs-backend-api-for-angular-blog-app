@@ -4,6 +4,7 @@ const postManagementController = require('./../../controllers/admin/post-managem
 const verifyTokenMiddleware = require('./../../middlewares/user/verifyToken')
 
 router.get('/all', verifyTokenMiddleware.verifyAdmin, postManagementController.getPosts)
+router.get('/get/:id', verifyTokenMiddleware.verifyAdmin, postManagementController.getPost)
 router.patch('/approve', verifyTokenMiddleware.verifyAdmin, postManagementController.approveBlog)
 router.patch('/reject', verifyTokenMiddleware.verifyAdmin, postManagementController.rejecteBlog)
 

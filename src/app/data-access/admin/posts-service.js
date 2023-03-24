@@ -1,4 +1,11 @@
 const POST_MODEL = require('./../../models/post-schema')
+async function getBlogByIdFromDatabase(blogId) {
+    return await POST_MODEL.aggregate([
+        { $match: { deleted: false, _id: blogId } },
+        { $project: { _id: 1, slug: 1, title: 1, content: 1, status: 1 } }
+    ])
+}
+
 
 async function getAllPostsWithAuthorDetails() {
     return await POST_MODEL.aggregate([
@@ -65,5 +72,6 @@ module.exports = {
     changeStatusToPublished,
     changeStatusToRejected,
     getBlogStatusCountFromDatabase,
-    getBlogStatusCountByIdFromDatabase
+    getBlogStatusCountByIdFromDatabase,
+    getBlogByIdFromDatabase
 }

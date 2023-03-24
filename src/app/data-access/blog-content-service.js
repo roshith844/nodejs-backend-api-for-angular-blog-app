@@ -16,7 +16,7 @@ async function getLatestBlogs(numberOfBlogs) {
 }
 
 async function getBlogContent(slug) {
-  return await POST_MODEL.aggregate([{ $match: { slug: slug, deleted: false } },
+  return await POST_MODEL.aggregate([{ $match: { slug: slug, deleted: false, status: 'published' } },
 
   {
     $lookup:

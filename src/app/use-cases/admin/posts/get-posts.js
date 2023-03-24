@@ -1,8 +1,15 @@
-const { getAllPostsWithAuthorDetails, getBlogStatusCountFromDatabase, getBlogStatusCountByIdFromDatabase } = require("../../../data-access/admin/posts-service")
+const { getAllPostsWithAuthorDetails, getBlogStatusCountFromDatabase, getBlogStatusCountByIdFromDatabase, getBlogByIdFromDatabase } = require("../../../data-access/admin/posts-service")
 const { changeToMongooseObjectId } = require("../../../data-access/modify-data/mongoose-service")
 
 async function getAllPosts() {
   const RESPONSE = await getAllPostsWithAuthorDetails()
+  if (RESPONSE.length === 0) return false
+  return RESPONSE
+}
+
+async function getPostByBlogId(blogId) {
+  const BLOG_ID_AS_OBJECT_ID = changeToMongooseObjectId(blogId)
+  const RESPONSE = await getBlogByIdFromDatabase(BLOG_ID_AS_OBJECT_ID)
   if (RESPONSE.length === 0) return false
   return RESPONSE
 }
@@ -22,7 +29,7 @@ async function getBlogStatusCount() {
 
 async function getBlogStatusCountbyUserId(userId) {
   let statusCount = {}
-   const USER_ID =  changeToMongooseObjectId(userId)
+  const USER_ID = changeToMongooseObjectId(userId)
   let response = await getBlogStatusCountByIdFromDatabase(USER_ID)
 
   if (!response) return false
@@ -34,4 +41,4 @@ async function getBlogStatusCountbyUserId(userId) {
 }
 
 // 
-module.exports = { getAllPosts, getBlogStatusCount,getBlogStatusCountbyUserId }
+module.exports = { getAllPosts, getBlogStatusCount, getBlogStatusCountbyUserId, getPostByBlogId }

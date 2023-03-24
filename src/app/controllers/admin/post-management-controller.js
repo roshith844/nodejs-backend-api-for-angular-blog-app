@@ -1,4 +1,4 @@
-const { getAllPosts } = require("../../use-cases/admin/posts/get-posts")
+const { getAllPosts, getPostByBlogId } = require("../../use-cases/admin/posts/get-posts")
 const { publishBlog, rejectBlog } = require("../../use-cases/admin/posts/update-blog")
 
 module.exports = {
@@ -16,7 +16,22 @@ module.exports = {
                 "data": POSTS
             })
         }
-
+    },
+    getPost: async (req, res) => {
+        const BLOG_ID = req.params.id
+        const ADMIN_ID = req.admin
+        const BLOG_POST = await getPostByBlogId(BLOG_ID)
+        if (BLOG_POST === false) {
+            return res.json({
+                "success": false,
+                "message": 'no blogs found'
+            })
+        } else {
+            res.json({
+                "success": true,
+                "data": BLOG_POST
+            })
+        }
     },
     approveBlog: async (req, res) => {
         const { blogId } = req.body
