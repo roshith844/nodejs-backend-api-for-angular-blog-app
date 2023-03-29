@@ -4,7 +4,7 @@ const { editProfilebyId } = require("../../use-cases/save-to-database/update-use
 const { saveUserProfilePictureUrl } = require("../../use-cases/upload-profile-picture/save-image-url")
 
 module.exports = {
-    getProfile: async (req, res) => {
+    getProfile: async (req, res, next) => {
         const ADMIN_ID = req.admin
         const ADMIN_DETAILS = await getAdminDetails(ADMIN_ID)
         if (ADMIN_DETAILS === false || ADMIN_DETAILS === null || ADMIN_DETAILS.length === 0) {
@@ -24,7 +24,7 @@ module.exports = {
             })
         }
     },
-    editProfile: async (req, res) => {
+    editProfile: async (req, res, next) => {
         const ADMIN_ID = req.admin
         const { name, email, phone } = req.body
         if (await editProfilebyId(ADMIN_ID, name, email, phone) === true) {
@@ -33,7 +33,7 @@ module.exports = {
             res.json({ "success": false })
         }
     },
-    editProfileImage: async (req, res) => {
+    editProfileImage: async (req, res, next) => {
 
         // Uploads to cloudinary
         const RESULT = await cloudinary.uploader.upload(req.file.path, {

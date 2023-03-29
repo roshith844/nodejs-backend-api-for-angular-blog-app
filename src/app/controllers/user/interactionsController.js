@@ -5,7 +5,7 @@ const { getFavoriteItems } = require('../../use-cases/get-data-from-database/get
 const { getBlogCardFromArticleId } = require('../../use-cases/get-data-from-database/get-blog')
 
 module.exports = {
-    addOrRemoveFromFavorites: async (req, res) => {
+    addOrRemoveFromFavorites: async (req, res, next) => {
         const { articleId } = req.body
 
         // decode token
@@ -60,7 +60,7 @@ module.exports = {
 
         }
     },
-    getFavoritesCards: async (req, res) => {
+    getFavoritesCards: async (req, res, next) => {
 
         // get user email from token 
         const USER_EMAIL = jwtTokenManagement.getUserEmailFromToken(req.headers.authorization)

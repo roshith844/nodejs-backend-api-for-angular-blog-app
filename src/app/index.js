@@ -24,6 +24,7 @@ const writerDashboardRoutes = require('./routes/writer/dashboard')
 
 require('./database')
 const mongoose = require('mongoose')
+const errorHandler = require('./middlewares/error-handler')
 mongoose.set('strictQuery', false)
 
 app.use(cors())
@@ -48,6 +49,8 @@ app.use('/writer/blog', writerContentRoutes)
 app.use('/writer/chat', writerChatRoutes)
 app.use('/writer/profile', writerProfileRoutes)
 app.use('/blog/comments', commentRoutes)
+
+app.use(errorHandler)
 
 app.listen(3000, () => {
     console.log(`app listening on port 3000`)

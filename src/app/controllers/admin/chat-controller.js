@@ -4,7 +4,7 @@ const { isArticleIdExists } = require("../../use-cases/validation/validate-id")
 const { getAllMessages } = require("../../use-cases/writer/chat/get-message")
 
 module.exports = {
-    sendMessage: async (req, res) => {
+    sendMessage: async (req, res, next) => {
         const ADMIN_ID = req.admin
         const { blogId, message, author } = req.body
 
@@ -12,13 +12,13 @@ module.exports = {
         if (await sendMessageToWriter(blogId, message, author, ADMIN_ID) === true) return res.json({ success: true })
         res.json({ "success": false, "message": 'message not send' })
     },
-    getChatMessages: async (req, res) => {
+    getChatMessages: async (req, res, next) => {
         const BLOG_ID = req.params.id
         const ALL_CHAT_MESSAGES = await getAllMessages(BLOG_ID)
         if (!ALL_CHAT_MESSAGES) return res.json({ "success": false })
         res.json({ "success": true, "data": ALL_CHAT_MESSAGES })
     },
-    markAsRead: async (req, res) => {
+    markAsRead: async (req, res, next) => {
         const { blogId } = req.body
         if (await updateMessageAsRead(blogId) === true) {
             res.json({ "success": true })

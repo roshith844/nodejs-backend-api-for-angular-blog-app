@@ -4,7 +4,7 @@ const { generateJwtTokens } = require("../../use-cases/token/jwt-token-managemen
 const { validateEmail, validatePassword } = require("../../use-cases/validation/form-validation")
 
 module.exports = {
-    loginAdmin: async (req, res) => {
+    loginAdmin: async (req, res, next) => {
         const { email, password } = req.body
         if (!(validateEmail(email) || validatePassword(password))) {
             return res.status(400).json({

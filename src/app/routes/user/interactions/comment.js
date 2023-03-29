@@ -1,10 +1,11 @@
 const express = require('express')
+const { tryCatch } = require('../../../utils/try-catch')
 const router = express.Router()
 const commentController = require('./../../../controllers/user/interactions/commentController')
 const verifyTokenMiddleware = require('./../../../middlewares/user/verifyToken')
 
-router.post('/add', verifyTokenMiddleware.verifyUser, commentController.addComment)
-router.get('/get/:id', commentController.getAllComments)
-router.delete('/blogId/:blogId/comment/:commentId',verifyTokenMiddleware.verifyUser, commentController.deleteComment )
+router.post('/add', verifyTokenMiddleware.verifyUser, tryCatch(commentController.addComment))
+router.get('/get/:id', tryCatch(commentController.getAllComments))
+router.delete('/blogId/:blogId/comment/:commentId', verifyTokenMiddleware.verifyUser, tryCatch(commentController.deleteComment))
 
 module.exports = router

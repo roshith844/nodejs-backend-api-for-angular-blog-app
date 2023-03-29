@@ -3,13 +3,13 @@ const { softDeleteComment } = require("../../../use-cases/delete-data/delete-com
 const { addCommentbyBlogId, getCommentsByBlogId } = require("../../../use-cases/interactions/comments");
 
 module.exports = {
-    addComment: async (req, res) => {
+    addComment: async (req, res, next) => {
         const USER_ID = req.user
         const { blogId, comment } = req.body
         const RESPONSE = await addCommentbyBlogId(blogId, USER_ID, comment)
         if (RESPONSE != false) res.json({ "success": true, "data": RESPONSE })
     },
-    getAllComments: async (req, res) => {
+    getAllComments: async (req, res, next) => {
         const BLOG_ID = req.params.id
         const COMMENTS = await getCommentsByBlogId(BLOG_ID)
         if (COMMENTS === false) {

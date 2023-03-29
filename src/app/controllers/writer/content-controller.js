@@ -8,7 +8,7 @@ const { savePost } = require("../../use-cases/writer/save-to-database/save-blog"
 const { findbyIdAndUpdateBlog } = require("../../use-cases/writer/update-data/update-blog")
 
 module.exports = {
-    postContent: async (req, res) => {
+    postContent: async (req, res, next) => {
         const { title, content, slug } = req.body
         const USER_ID = req.user
 
@@ -42,7 +42,7 @@ module.exports = {
 
     },
 
-    getAllBlogs: async (req, res) => {
+    getAllBlogs: async (req, res, next) => {
         const WRITER_ID = req.user
         const ALL_BLOGS = await WriterGetDataService.getAllBlogs(WRITER_ID)
         if (ALL_BLOGS) {
@@ -56,7 +56,7 @@ module.exports = {
 
     },
 
-    getBlog: async (req, res) => {
+    getBlog: async (req, res, next) => {
         const SLUG = req.params.slug
         const ARTICLE_ID = stringToObjectId(SLUG)
         const BLOG = await getBlogFromArticleId(ARTICLE_ID)
@@ -72,7 +72,7 @@ module.exports = {
         }
 
     },
-    updateBlog: async (req, res) => {
+    updateBlog: async (req, res, next) => {
         const { articleId, title, slug, content } = req.body
 
         // Checks blog exists
@@ -95,7 +95,7 @@ module.exports = {
         }
     },
 
-    deleteBlog: async (req, res) => {
+    deleteBlog: async (req, res, next) => {
         const BLOG_ID = req.params.id
         const IS_DELETED = await deleteBlogbyId(BLOG_ID)
         res.json({ "success": IS_DELETED })

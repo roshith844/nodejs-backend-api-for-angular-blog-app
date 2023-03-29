@@ -6,9 +6,10 @@ const saveToDatabaseService = require('./../../use-cases/save-to-database/save-u
 const { getDocumentId } = require('../../use-cases/get-data-from-database/get-user-details')
 const { getUserRole, getUserDetails } = require("../../use-cases/get-data-from-database/get-user-details")
 const tokenManagement = require("../../use-cases/token/jwt-token-management")
+
 // decodeJwtToken
 module.exports = {
-    loginUser: async (req, res) => {
+    loginUser: async (req, res, next) => {
         const { email, password } = req.body
         if (!(formValidation.validateEmail(email) || formValidation.validatePassword(password))) {
             res.status(400).json({
@@ -29,7 +30,6 @@ module.exports = {
             res.json(TOKENS)
 
         } else {
-            console.log('verification failed')
             res.json({
                 "success": false,
                 "message": "invalid Credentials"
@@ -37,7 +37,7 @@ module.exports = {
         }
     },
 
-    signupUser: async (req, res) => {
+    signupUser: async (req, res, next) => {
 
         const { name, email, phone, password, confirmPassword } = req.body
         if ((await formValidation.checkUserExistance(email) == true)) {
@@ -52,7 +52,7 @@ module.exports = {
             })
         }
     },
-    getUserStatus: async (req, res) => {
+    getUserStatus: async (req, res, next) => {
         let isLoggedIn = false
         let userId
         let nameOfUser = 'unknown'

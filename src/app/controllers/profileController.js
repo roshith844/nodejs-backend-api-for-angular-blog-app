@@ -5,7 +5,7 @@ const tokenManagement = require("../use-cases/token/jwt-token-management")
 const { saveUserProfilePictureUrl } = require("../use-cases/upload-profile-picture/save-image-url")
 // decodeJwtToken
 module.exports = {
-    getProfile: async (req, res) => {
+    getProfile: async (req, res, next) => {
         const USER_ID = req.user
         const USER_DETAILS = await getUserDetails(USER_ID)
         if (USER_DETAILS === false || USER_DETAILS === null || USER_DETAILS.length === 0) {
@@ -26,7 +26,7 @@ module.exports = {
         }
     },
 
-    editProfile: async (req, res) => {
+    editProfile: async (req, res, next) => {
         const USER_ID = req.user
         const { name, email, phone } = req.body
         if (await editProfilebyId(USER_ID, name, email, phone) === true) {
@@ -36,7 +36,7 @@ module.exports = {
         }
     },
 
-    editProfileImage: async (req, res) => {
+    editProfileImage: async (req, res, next) => {
 
         // Uploads to cloudinary
         const RESULT = await cloudinary.uploader.upload(req.file.path, {

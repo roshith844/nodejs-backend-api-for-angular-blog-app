@@ -2,7 +2,7 @@ const { getPageViewsOfArticle } = require("../../use-cases/get-data-from-databas
 const { incrementPageViews, incrementVisitsCount } = require("../../use-cases/save-to-database/update-views-and-visits")
 
 module.exports = {
-    incrementPageView: async (req, res) => {
+    incrementPageView: async (req, res, next) => {
         const { articleId, incrementVisits } = req.body
         let isPageViewUpdated = false
         let isVisitsCountUpdated = false
@@ -37,7 +37,7 @@ module.exports = {
 
     },
 
-    getPageViewsCount: async (req, res) => {
+    getPageViewsCount: async (req, res, next) => {
         const ARTICLE_ID = req.params.articleId
 
         const PAGE_VIEWS = await getPageViewsOfArticle(ARTICLE_ID)

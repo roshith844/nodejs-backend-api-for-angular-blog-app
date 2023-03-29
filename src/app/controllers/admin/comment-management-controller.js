@@ -3,7 +3,7 @@ const { removeCommentFromblog } = require("../../use-cases/admin/comments/remove
 const { softDeleteComment } = require("../../use-cases/delete-data/delete-comments")
 
 module.exports = {
-    getComments: async (req, res) => {
+    getComments: async (req, res, next) => {
         const COMMENTS = await getAllComments()
         if (COMMENTS === false) {
             return res.json({
@@ -17,12 +17,12 @@ module.exports = {
             })
         }
     },
-    removeUserComment: async (req, res) => {
+    removeUserComment: async (req, res, next) => {
         const { blogId, commentId } = req.body
         if (await softDeleteComment(blogId, commentId) === true) {
             return res.json({ "success": true })
 
-            
+
         } else {
             res.json({ "success": false, "message": "something went wrong" })
         }

@@ -2,7 +2,7 @@ const { getAllPosts, getPostByBlogId } = require("../../use-cases/admin/posts/ge
 const { publishBlog, rejectBlog } = require("../../use-cases/admin/posts/update-blog")
 
 module.exports = {
-    getPosts: async (req, res) => {
+    getPosts: async (req, res, next) => {
         const ADMIN_ID = req.admin
         const POSTS = await getAllPosts()
         if (POSTS === false) {
@@ -17,7 +17,7 @@ module.exports = {
             })
         }
     },
-    getPost: async (req, res) => {
+    getPost: async (req, res, next) => {
         const BLOG_ID = req.params.id
         const ADMIN_ID = req.admin
         const BLOG_POST = await getPostByBlogId(BLOG_ID)
@@ -33,14 +33,14 @@ module.exports = {
             })
         }
     },
-    approveBlog: async (req, res) => {
+    approveBlog: async (req, res, next) => {
         const { blogId } = req.body
         const RESPONSE = await publishBlog(blogId)
         console.log(RESPONSE)
         if (RESPONSE === true) return res.json({ "success": true })
         res.json({ "success": false })
     },
-    rejecteBlog: async (req, res) => {
+    rejecteBlog: async (req, res, next) => {
         const { blogId } = req.body
         const RESPONSE = await rejectBlog(blogId)
         if (RESPONSE === true) return res.json({ "success": true })
