@@ -6,6 +6,6 @@ const FAVORITES_SCHEMA = new mongoose.Schema({
         type: ObjectId
     },
     items: [{ type: String }]
-}, { timestamp: true })
+}, { timestamps: true })
 
 module.exports = mongoose.model('favorites', FAVORITES_SCHEMA)

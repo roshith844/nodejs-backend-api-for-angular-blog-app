@@ -64,10 +64,34 @@ async function getBlogsFromDatabase() {
 
 async function getBlogsOfWriterFromDatabase(writerId) {
   return await POST_MODEL.aggregate([
+    { $match: {author: writerId, deleted: false } },
     {
-      $match: { author: writerId, deleted: false }
-    }
-  ])
+        $lookup:
+        {
+            from: "users",
+            localField: "author",
+            foreignField: "_id",
+            as: "author_details"
+        }
+    },
+    { $unwind: "$author_details" },
+    {
+        $lookup:
+        {
+            from: "chats",
+            localField: "_id",
+            foreignField: "blogId",
+            pipeline: [
+                { $match: { is_read: false, type: 'admin-to-writer'} },
+                {
+                    $count: "count"
+                }
+            ],
+            as: "unread"
+        }
+    },
+
+])
 }
 
 async function updateBlogOnDatabase(articleId, title, slug, content) {

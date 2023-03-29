@@ -19,9 +19,27 @@ async function getAllPostsWithAuthorDetails() {
                 as: "author_details"
             }
         },
-        { $unwind: "$author_details" }
+        { $unwind: "$author_details" },
+        {
+            $lookup:
+            {
+                from: "chats",
+                localField: "_id",
+                foreignField: "blogId",
+                pipeline: [
+                    { $match: { is_read: false, type: 'writer-to-admin' } },
+                    {
+                        $count: "count"
+                    }
+                ],
+                as: "unread"
+            }
+        },
+        // {$unwind : '$unread' }
     ])
 }
+
+
 
 async function changeStatusToPublished(blogId) {
     const RESPONSE = await POST_MODEL.updateOne({ _id: blogId }, { status: 'published' })
