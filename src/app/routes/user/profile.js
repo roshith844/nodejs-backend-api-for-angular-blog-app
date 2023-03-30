@@ -7,6 +7,6 @@ const { tryCatch } = require('../../utils/try-catch')
 
 router.get('/details', verifyTokenMiddleware.verifyUser, tryCatch(profileController.getProfile))
 router.patch('/edit', verifyTokenMiddleware.verifyUser, tryCatch(profileController.editProfile))
-router.post('/upload/profile-image', verifyTokenMiddleware.verifyUser, tryCatch(upload.single("image"), profileController.editProfileImage))
+router.post('/upload/profile-image', verifyTokenMiddleware.verifyUser, upload.single("image"), tryCatch(profileController.editProfileImage))
 
 module.exports = router
