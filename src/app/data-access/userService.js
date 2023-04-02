@@ -6,7 +6,7 @@ async function getUserDataFromEmail(email) {
 }
 
 async function getAdminDataFromId(adminId) {
-    return await USER_MODEL.findOne({ "_id": adminId})
+    return await USER_MODEL.findOne({ "_id": adminId })
 }
 
 async function getUserDataFromId(userId) {
@@ -39,4 +39,24 @@ async function editProfileOnDataBase(userId, name, email, phone) {
     return await USER_MODEL.updateOne({ _id: userId }, { name: name, email: email, phone: phone })
 }
 
-module.exports = { getUserDataFromEmail, getUserDataFromId, saveUserData, isEmailExists, updateRole, editProfileOnDataBase,getAdminDataFromId }
+async function getUserRoleAndStatusFromDatabase(userId) {
+    return await USER_MODEL.aggregate([
+        {
+            $match: { _id: userId }
+        },
+        {
+            $project: { _id: 0, role: 1, status: 1 }
+        }
+    ])
+
+}
+module.exports = {
+    getUserDataFromEmail,
+    getUserDataFromId,
+    saveUserData,
+    isEmailExists,
+    updateRole,
+    editProfileOnDataBase,
+    getAdminDataFromId,
+    getUserRoleAndStatusFromDatabase
+}

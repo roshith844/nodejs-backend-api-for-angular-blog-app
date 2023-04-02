@@ -3,7 +3,7 @@ const formDataVerificationService = require('./../../use-cases/verification/form
 const jwtTokenGenerationService = require('../../use-cases/token/jwt-token-management')
 const hashingService = require('./../../use-cases/hashing/password-hashing')
 const saveToDatabaseService = require('./../../use-cases/save-to-database/save-user-data')
-const { getDocumentId } = require('../../use-cases/get-data-from-database/get-user-details')
+const { getDocumentId, getUserRoleAndStatus } = require('../../use-cases/get-data-from-database/get-user-details')
 const { getUserRole, getUserDetails } = require("../../use-cases/get-data-from-database/get-user-details")
 const tokenManagement = require("../../use-cases/token/jwt-token-management")
 
@@ -11,6 +11,8 @@ const tokenManagement = require("../../use-cases/token/jwt-token-management")
 module.exports = {
     loginUser: async (req, res, next) => {
         const { email, password } = req.body
+
+        // Validation
         if (!(formValidation.validateEmail(email) || formValidation.validatePassword(password))) {
             res.status(400).json({
                 message: "validation failed"
@@ -21,14 +23,11 @@ module.exports = {
         const VERIFICATION_SUCCESS = await formDataVerificationService.verifyUser(email, password)
         const USER_ID = await getDocumentId(email)
         if (VERIFICATION_SUCCESS) {
-
-            const USER_DETAILS = { "id": USER_ID, "email": email }
-
+            const USER_DETAILS = await getUserRoleAndStatus(USER_ID)
+            if (!USER_DETAILS) return res.json({ "success": false, "message": "user not found" })
             if (USER_DETAILS.status === 'blocked') return res.json({ "success": false, "message": "user Blocked" })
-
             const TOKENS = jwtTokenGenerationService.generateJwtTokens(USER_DETAILS)
             res.json(TOKENS)
-
         } else {
             res.json({
                 "success": false,
@@ -38,7 +37,6 @@ module.exports = {
     },
 
     signupUser: async (req, res, next) => {
-
         const { name, email, phone, password, confirmPassword } = req.body
         if ((await formValidation.checkUserExistance(email) == true)) {
             res.json({

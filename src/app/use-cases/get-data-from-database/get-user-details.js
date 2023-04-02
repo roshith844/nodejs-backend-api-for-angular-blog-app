@@ -1,3 +1,4 @@
+const { changeToMongooseObjectId } = require('../../data-access/modify-data/mongoose-service')
 const userService = require('./../../data-access/userService')
 async function getDocumentId(email) {
     const USER_DETAILS = await userService.getUserDataFromEmail(email)
@@ -28,6 +29,10 @@ async function getUserDetails(userId) {
     if (USER_DETAILS === null || USER_DETAILS.length === 0) return false
     return USER_DETAILS
 }
+async function getUserRoleAndStatus(userId) {
+    const RESPONSE = await userService.getUserRoleAndStatusFromDatabase(userId)
+    return !RESPONSE ? false : RESPONSE.length === 0 ? false : RESPONSE[0]
+}
 
 async function getAdminDetails(adminId) {
     const ADMIN_DETAILS = await userService.getAdminDataFromId(adminId)
@@ -35,4 +40,4 @@ async function getAdminDetails(adminId) {
     return ADMIN_DETAILS
 }
 
-module.exports = { getDocumentId, getUserRole, getUserDetails, getAdminDetails }
+module.exports = { getDocumentId, getUserRole, getUserDetails, getAdminDetails, getUserRoleAndStatus }
