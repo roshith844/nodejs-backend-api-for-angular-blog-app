@@ -28,7 +28,7 @@ module.exports = {
         const USER_ID = req.user
         const BLOG_ID = req.params.blogId
         const COMMENT_ID = req.params.commentId
-        if (await softDeleteComment(BLOG_ID, COMMENT_ID) === true) {
+        if (await softDeleteComment(BLOG_ID, COMMENT_ID, USER_ID) === true) {
             res.json({ "success": true })
         } else {
             res.json({ "success": false })
