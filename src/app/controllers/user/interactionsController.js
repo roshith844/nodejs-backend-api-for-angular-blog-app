@@ -54,7 +54,16 @@ module.exports = {
 
                 } else {
                     // if not create new favorites and push 
-                    await favoritesService.createFavoritesAndAdd(USER_ID, articleId)
+                    if (await favoritesService.createFavoritesAndAdd(USER_ID, articleId) === true) {
+                        res.json({
+                            "success": true,
+                            "status": "add"
+                        })
+                    } else {
+                        res.sendStatus(403).json({
+                            "success": false
+                        })
+                    }
                 }
             }
 
