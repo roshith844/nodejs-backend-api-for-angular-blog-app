@@ -26,6 +26,8 @@ module.exports = {
             const USER_DETAILS = await getUserRoleAndStatus(USER_ID)
             if (!USER_DETAILS) return res.json({ "success": false, "message": "user not found" })
             if (USER_DETAILS.status === 'blocked') return res.json({ "success": false, "message": "user Blocked" })
+
+                console.log(USER_DETAILS)
             const TOKENS = jwtTokenGenerationService.generateJwtTokens(USER_DETAILS)
             res.json(TOKENS)
         } else {

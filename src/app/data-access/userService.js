@@ -45,7 +45,7 @@ async function getUserRoleAndStatusFromDatabase(userId) {
             $match: { _id: userId }
         },
         {
-            $project: { _id: 0, role: 1, status: 1 }
+            $project: { _id: 0, role: 1, status: 1, email: 1 }
         }
     ])
 

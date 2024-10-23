@@ -9,6 +9,8 @@ async function checkUserHasFavoritesCollection(userId) {
 }
 
 async function addToFavorites(userId, articleId) {
+    
+    console.log(userId, articleId)
     const RESPONSE = await favoritesService.pushArticleIdToFavorites(userId, articleId)
     if (RESPONSE.modifiedCount == 1) {
         return true
