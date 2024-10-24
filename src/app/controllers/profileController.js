@@ -12,21 +12,12 @@ const {
 } = require("../use-cases/upload-profile-picture/save-image-url");
 const jwtTokenManagement = require("../use-cases/token/jwt-token-management");
 const userDetailsManagement = require("../use-cases/get-data-from-database/get-user-details");
-
+const getUserIdHelper = require("./../utils/get-user-id");
 // decodeJwtToken
 module.exports = {
   getProfile: async (req, res, next) => {
-    // const USER_ID = req.user
-    const USER_EMAIL = jwtTokenManagement.getUserEmailFromToken(
-      req.headers.authorization
-    );
-    if (USER_EMAIL == false) {
-      res.status(403).json({
-        success: false,
-      });
-      return;
-    }
-    const USER_ID = await userDetailsManagement.getDocumentId(USER_EMAIL);
+    const USER_DATA = await getUserIdHelper.getUserIdAndEmail(req.headers.authorization);
+    const USER_ID = USER_DATA.id
     if (USER_ID == false) {
       res.status(403).json({
         success: false,
@@ -59,8 +50,15 @@ module.exports = {
   },
 
   editProfile: async (req, res, next) => {
-    const USER_ID = req.user;
     const { name, email, phone } = req.body;
+    const USER_DATA = await getUserIdHelper.getUserIdAndEmail(req.headers.authorization);
+    const USER_ID = USER_DATA.id
+    if (USER_ID == false) {
+      res.status(403).json({
+        success: false,
+      });
+      return;
+    }
     if ((await editProfilebyId(USER_ID, name, email, phone)) === true) {
       res.json({ success: true });
     } else {
@@ -69,6 +67,15 @@ module.exports = {
   },
 
   editProfileImage: async (req, res, next) => {
+    const USER_DATA = await getUserIdHelper.getUserIdAndEmail(req.headers.authorization);
+    const USER_ID = USER_DATA.id
+    if (USER_ID == false) {
+      res.status(403).json({
+        success: false,
+      });
+      return;
+    }
+    console.log(USER_ID);
     // Uploads to cloudinary
     const RESULT = await cloudinary.uploader.upload(req.file.path, {
       public_id: `${req.user}_profile`,
@@ -77,7 +84,6 @@ module.exports = {
       crop: "fill",
     });
 
-    const USER_ID = req.user;
     if (!RESULT)
       return res.json(
         res.json({ success: false, message: "not uploaded to cloudinary" })
