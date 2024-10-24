@@ -24,6 +24,21 @@ async function getUserRole(userId) {
     }
 }
 
+async function getUserProfileData(userId){
+    if (userId == null) return false
+    const USER_DETAILS = await userService.getUserDataFromId(userId)
+    if (USER_DETAILS != null) {
+        return {
+            id: USER_DETAILS._id.toString(),
+            name: USER_DETAILS.name,
+            role: USER_DETAILS.role,
+            profilePictureUrl: USER_DETAILS.profie_picture_url
+        }
+    } else {
+        return false
+    }
+}
+
 async function getUserDetails(userId) {
     const USER_DETAILS = await userService.getUserDataFromId(userId)
     if (USER_DETAILS === null || USER_DETAILS.length === 0) return false
@@ -40,4 +55,4 @@ async function getAdminDetails(adminId) {
     return ADMIN_DETAILS
 }
 
-module.exports = { getDocumentId, getUserRole, getUserDetails, getAdminDetails, getUserRoleAndStatus }
+module.exports = { getDocumentId, getUserRole, getUserDetails, getAdminDetails, getUserRoleAndStatus, getUserProfileData }

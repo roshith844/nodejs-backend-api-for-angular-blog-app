@@ -6,12 +6,9 @@ const {
 const {
   editProfilebyId,
 } = require("../use-cases/save-to-database/update-user-data");
-const tokenManagement = require("../use-cases/token/jwt-token-management");
 const {
   saveUserProfilePictureUrl,
 } = require("../use-cases/upload-profile-picture/save-image-url");
-const jwtTokenManagement = require("../use-cases/token/jwt-token-management");
-const userDetailsManagement = require("../use-cases/get-data-from-database/get-user-details");
 const getUserIdHelper = require("./../utils/get-user-id");
 // decodeJwtToken
 module.exports = {
@@ -75,7 +72,6 @@ module.exports = {
       });
       return;
     }
-    console.log(USER_ID);
     // Uploads to cloudinary
     const RESULT = await cloudinary.uploader.upload(req.file.path, {
       public_id: `${req.user}_profile`,
