@@ -19,7 +19,6 @@ module.exports = {
     },
     getPost: async (req, res, next) => {
         const BLOG_ID = req.params.id
-        const ADMIN_ID = req.admin
         const BLOG_POST = await getPostByBlogId(BLOG_ID)
         if (BLOG_POST === false) {
             return res.json({

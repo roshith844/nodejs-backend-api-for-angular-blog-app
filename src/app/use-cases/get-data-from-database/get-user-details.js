@@ -49,10 +49,16 @@ async function getUserRoleAndStatus(userId) {
     return !RESPONSE ? false : RESPONSE.length === 0 ? false : RESPONSE[0]
 }
 
+
+async function  fetchUserDetails(userId) {
+    const RESPONSE = await userService.getUserAuthDetails(userId)
+    return !RESPONSE ? false : RESPONSE.length === 0 ? false : RESPONSE[0]
+}
+
 async function getAdminDetails(adminId) {
     const ADMIN_DETAILS = await userService.getAdminDataFromId(adminId)
     if (ADMIN_DETAILS === null || ADMIN_DETAILS.length === 0) return false
     return ADMIN_DETAILS
 }
 
-module.exports = { getDocumentId, getUserRole, getUserDetails, getAdminDetails, getUserRoleAndStatus, getUserProfileData }
+module.exports = { getDocumentId, getUserRole, getUserDetails, getAdminDetails, getUserRoleAndStatus, getUserProfileData, fetchUserDetails }

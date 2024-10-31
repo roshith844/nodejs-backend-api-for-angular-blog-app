@@ -6,11 +6,27 @@ const { validateSlug } = require("../../use-cases/validation/validate-slug")
 const WriterGetDataService = require("../../use-cases/writer/get-data/get-blogs")
 const { savePost } = require("../../use-cases/writer/save-to-database/save-blog")
 const { findbyIdAndUpdateBlog } = require("../../use-cases/writer/update-data/update-blog")
+const jwtTokenManagement = require('../../use-cases/token/jwt-token-management')
+const userDetailsManagement = require('../../use-cases/get-data-from-database/get-user-details')
 
 module.exports = {
     postContent: async (req, res, next) => {
         const { title, content, slug } = req.body
-        const USER_ID = req.user
+        const USER_EMAIL = jwtTokenManagement.getUserEmailFromToken(req.headers.authorization)
+        if (USER_EMAIL == false) {
+            res.status(403).json({
+                "success": false
+            })
+            return
+        } 
+            // Take userId from database
+            const USER_ID = await userDetailsManagement.getDocumentId(USER_EMAIL)
+            if (USER_ID == false) {
+                res.status(403).json({
+                    "success": false
+                })
+                return
+            }
 
         if (title === null || content === null || USER_ID === null || slug === null) {
             res.json({

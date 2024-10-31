@@ -23,7 +23,6 @@ module.exports = {
     }
 
     const USER_DETAILS = await getUserDetails(USER_ID);
-    console.log(USER_ID, USER_DETAILS);
     if (
       USER_DETAILS === false ||
       USER_DETAILS === null ||

@@ -12,6 +12,7 @@ const {
 } = require("../../use-cases/get-data-from-database/get-user-details");
 const jwtTokenManagement = require("../../use-cases/token/jwt-token-management");
 const userDetailsManagement = require("./../../use-cases/get-data-from-database/get-user-details");
+const { getUserAuthDetails } = require("../../data-access/userService");
 
 // decodeJwtToken
 module.exports = {
@@ -37,7 +38,7 @@ module.exports = {
     );
     const USER_ID = await getDocumentId(email);
     if (VERIFICATION_SUCCESS) {
-      const USER_DETAILS = await getUserRoleAndStatus(USER_ID);
+      const USER_DETAILS = await userDetailsManagement.fetchUserDetails(USER_ID);
       if (!USER_DETAILS)
         return res.json({ success: false, message: "user not found" });
       if (USER_DETAILS.status === "blocked")

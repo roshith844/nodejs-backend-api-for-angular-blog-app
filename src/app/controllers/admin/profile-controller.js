@@ -5,7 +5,15 @@ const { saveUserProfilePictureUrl } = require("../../use-cases/upload-profile-pi
 
 module.exports = {
     getProfile: async (req, res, next) => {
-        const ADMIN_ID = req.admin
+        const DATA = await getUserIdHelper.getUserIdAndEmail(req.headers.authorization);
+        const ADMIN_ID = DATA.id
+        if (ADMIN_ID == false) {
+          res.status(403).json({
+            success: false,
+          });
+          return;
+        }
+
         const ADMIN_DETAILS = await getAdminDetails(ADMIN_ID)
         if (ADMIN_DETAILS === false || ADMIN_DETAILS === null || ADMIN_DETAILS.length === 0) {
             res.json({
@@ -25,7 +33,14 @@ module.exports = {
         }
     },
     editProfile: async (req, res, next) => {
-        const ADMIN_ID = req.admin
+        const DATA = await getUserIdHelper.getUserIdAndEmail(req.headers.authorization);
+        const ADMIN_ID = DATA.id
+        if (ADMIN_ID == false) {
+          res.status(403).json({
+            success: false,
+          });
+          return;
+        }
         const { name, email, phone } = req.body
         if (await editProfilebyId(ADMIN_ID, name, email, phone) === true) {
             res.json({ "success": true })
@@ -36,14 +51,22 @@ module.exports = {
     editProfileImage: async (req, res, next) => {
 
         // Uploads to cloudinary
+     
+        const DATA = await getUserIdHelper.getUserIdAndEmail(req.headers.authorization);
+        const ADMIN_ID = DATA.id
+        if (ADMIN_ID == false) {
+          res.status(403).json({
+            success: false,
+          });
+          return;
+        }
         const RESULT = await cloudinary.uploader.upload(req.file.path, {
-            public_id: `${req.user}_profile`,
+            public_id: `${DATA.email}_profile`,
             width: 500,
             height: 500,
             crop: 'fill'
         })
-
-        const ADMIN_ID = req.admin
+        
         if (!RESULT) return res.json(res.json({ "success": false, "message": "not uploaded to cloudinary" }))
 
         const IMAGE_URL = RESULT.url
