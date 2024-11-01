@@ -12,21 +12,7 @@ const userDetailsManagement = require('../../use-cases/get-data-from-database/ge
 module.exports = {
     postContent: async (req, res, next) => {
         const { title, content, slug } = req.body
-        const USER_EMAIL = jwtTokenManagement.getUserEmailFromToken(req.headers.authorization)
-        if (USER_EMAIL == false) {
-            res.status(403).json({
-                "success": false
-            })
-            return
-        } 
-            // Take userId from database
-            const USER_ID = await userDetailsManagement.getDocumentId(USER_EMAIL)
-            if (USER_ID == false) {
-                res.status(403).json({
-                    "success": false
-                })
-                return
-            }
+        const USER_ID = req.user.id
 
         if (title === null || content === null || USER_ID === null || slug === null) {
             res.json({
@@ -59,7 +45,7 @@ module.exports = {
     },
 
     getAllBlogs: async (req, res, next) => {
-        const WRITER_ID = req.user
+        const WRITER_ID = req.user.id
         const ALL_BLOGS = await WriterGetDataService.getAllBlogs(WRITER_ID)
         if (ALL_BLOGS) {
             res.json({

@@ -1,7 +1,7 @@
 const express = require('express')
 const router = express.Router()
 const profileController = require('../../controllers/profileController')
-const verifyTokenMiddleware = require('../../middlewares/user/verifyToken')
+const verifyTokenMiddleware = require('./../../middlewares/token/verify-token')
 const upload = require("../../middlewares/multer")
 const { tryCatch } = require('../../utils/try-catch')
 

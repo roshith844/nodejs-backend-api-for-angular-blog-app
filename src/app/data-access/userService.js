@@ -2,7 +2,10 @@ const mongoose = require("mongoose");
 const USER_MODEL = require("../models/userSchema");
 
 async function getUserDataFromEmail(email) {
-  return await USER_MODEL.findOne({ email: email });
+  return await USER_MODEL.findOne(
+    { email: email },
+    { _id: 1, role: 1, status: 1, email: 1, password: 1 }
+  );
 }
 
 async function getAdminDataFromId(adminId) {
@@ -61,10 +64,10 @@ async function getUserRoleAndStatusFromDatabase(userId) {
   ]);
 }
 
-async function getUserAuthDetails(userId) {
+async function getUserAuthDetails(email) {
   return await USER_MODEL.aggregate([
     {
-      $match: { _id: userId },
+      $match: { email },
     },
     {
       $project: { _id: 1, role: 1, status: 1, email: 1 },
@@ -80,5 +83,5 @@ module.exports = {
   editProfileOnDataBase,
   getAdminDataFromId,
   getUserRoleAndStatusFromDatabase,
-  getUserAuthDetails
+  getUserAuthDetails,
 };

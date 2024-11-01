@@ -13,8 +13,6 @@ module.exports = {
       });
       return;
     }
-
-    console.log("userId got", req.user);
     const STATUS_COUNT = await getBlogStatusCountbyUserId(USER_ID);
     console.log(STATUS_COUNT)
     if (!STATUS_COUNT) return res.json({ success: false });

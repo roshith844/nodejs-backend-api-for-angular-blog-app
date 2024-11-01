@@ -38,7 +38,9 @@ module.exports = {
     );
     const USER_ID = await getDocumentId(email);
     if (VERIFICATION_SUCCESS) {
-      const USER_DETAILS = await userDetailsManagement.fetchUserDetails(USER_ID);
+      const USER_DETAILS = await userDetailsManagement.fetchUserDetails(
+        email
+      );
       if (!USER_DETAILS)
         return res.json({ success: false, message: "user not found" });
       if (USER_DETAILS.status === "blocked")
@@ -130,21 +132,22 @@ module.exports = {
         success: false,
         message: "something went wrong",
       });
-    }
-    // if token valid set userloggin true\
-    if (userId != null || USER_INFO != null) {
-      res.json({
-        userId: USER_INFO.id,
-        role: USER_INFO.role,
-        name: USER_INFO.name,
-        image: USER_INFO.profilePictureUrl,
-        loggedIn: isLoggedIn,
-      });
     } else {
-      res.json({
-        role: "public",
-        loggedIn: false,
-      });
+      // if token valid set userloggin true\
+      if (userId != null || USER_INFO != null) {
+        res.json({
+          userId: USER_INFO.id,
+          role: USER_INFO.role,
+          name: USER_INFO.name,
+          image: USER_INFO.profilePictureUrl,
+          loggedIn: isLoggedIn,
+        });
+      } else {
+        res.json({
+          role: "public",
+          loggedIn: false,
+        });
+      }
     }
   },
 };

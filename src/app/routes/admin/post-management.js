@@ -2,7 +2,7 @@ const express = require('express')
 const { tryCatch } = require('../../utils/try-catch')
 const router = express.Router()
 const postManagementController = require('./../../controllers/admin/post-management-controller')
-const verifyTokenMiddleware = require('./../../middlewares/user/verifyToken')
+const verifyTokenMiddleware = require('./../../middlewares/token/verify-token')
 
 router.get('/all', verifyTokenMiddleware.verifyAdmin, tryCatch(postManagementController.getPosts))
 router.get('/get/:id', verifyTokenMiddleware.verifyAdmin, tryCatch(postManagementController.getPost))

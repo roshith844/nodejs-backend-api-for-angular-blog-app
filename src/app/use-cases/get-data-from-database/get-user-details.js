@@ -50,8 +50,8 @@ async function getUserRoleAndStatus(userId) {
 }
 
 
-async function  fetchUserDetails(userId) {
-    const RESPONSE = await userService.getUserAuthDetails(userId)
+async function  fetchUserDetails(email) {
+    const RESPONSE = await userService.getUserAuthDetails(email)
     return !RESPONSE ? false : RESPONSE.length === 0 ? false : RESPONSE[0]
 }
 

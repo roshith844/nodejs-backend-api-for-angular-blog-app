@@ -5,6 +5,10 @@ const {
 const {
   stringToObjectId,
 } = require("../../use-cases/modify-data/change-format");
+// const ACCESS_TOKEN_SECRET =
+//   "4c2beacdb5767f39c44536f4c0207fced37b6322a2ad564a177a5361d41b63044a9ee0389d8f71f894c72fd53ffb09d1d7325143ca2078e44c0d673692aaaf9a";
+// const REFRESH_TOKEN_SECRET =
+//   "4c2beacdb5767f39c44536f4c0207fced37b6322a2ad564a177a5361d41b63044a9ee0389d8f71f894c72fd53ffb09d1d7325143ca2078e44c0d673692aaaf9a";
 const ACCESS_TOKEN_SECRET =
   "4c2beacdb5767f39c44536f4c0207fced37b6322a2ad564a177a5361d41b63044a9ee0389d8f71f894c72fd53ffb09d1d7325143ca2078e44c0d673692aaaf9a";
 const REFRESH_TOKEN_SECRET =
@@ -23,7 +27,19 @@ module.exports = {
     try {
       const DECODED = jwt.verify(TOKEN.split(" ")[1], ACCESS_TOKEN_SECRET);
       if (DECODED) {
-        req.user = DECODED.id;
+        const USER_ID = stringToObjectId(DECODED.id);
+        const ROLE = DECODED.role;
+        if (ROLE === "user") {
+          req.user = {
+            id: USER_ID,
+            email: DECODED.email,
+          };
+        }else {
+          return res.status(400).send({
+            token: false,
+            message: "invalid token",
+          });
+        }
         next();
       } else {
         return res.status(400).send({
@@ -39,7 +55,9 @@ module.exports = {
     }
   },
   verifyAdmin: (req, res, next) => {
+    console.log('running token aurtorizatiobn')
     const TOKEN = req.headers.authorization;
+    console.log(TOKEN)
     if (!TOKEN) {
       return res.status(400).send({
         token: false,
@@ -48,8 +66,21 @@ module.exports = {
     }
     try {
       const DECODED = jwt.verify(TOKEN.split(" ")[1], ACCESS_TOKEN_SECRET);
+      console.log(DECODED)
       if (DECODED) {
-        req.admin = DECODED.id;
+        const ADMIN_ID = stringToObjectId(DECODED.id);
+        const ROLE = DECODED.role;
+        if (ROLE === "admin") {
+          req.admin = {
+            id: ADMIN_ID,
+            email: DECODED.email,
+          };
+        }else {
+          return res.status(400).send({
+            token: false,
+            message: "invalid token",
+          });
+        }
         next();
       } else {
         return res.status(400).send({
@@ -76,7 +107,7 @@ module.exports = {
     try {
       const DECODED = jwt.verify(TOKEN.split(" ")[1], ACCESS_TOKEN_SECRET);
       if (DECODED) {
-        let USER_ID = stringToObjectId(DECODED.id);
+        const USER_ID = stringToObjectId(DECODED.id);
         const ROLE = DECODED.role;
         console.log("DECODED", DECODED);
         // const RESPONSE = await getUserRole(USER_ID)
@@ -84,11 +115,11 @@ module.exports = {
         // if (!RESPONSE) return res.status(400).send({ token: false, message: 'invalid token', })
         if (ROLE === "writer") {
           req.user = {
-            id: USER_ID, 
+            id: USER_ID,
             email: DECODED.email,
           };
           console.log(req.user);
-          console.log();
+
           next();
         } else {
           return res.status(400).send({
