@@ -7,3 +7,6 @@ router.get('/cards', tryCatch(contentController.getBlogCards))
 router.get('/:slug', tryCatch(contentController.getBlogContent))
 
 module.exports = router
+
+
+

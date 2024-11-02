@@ -114,6 +114,8 @@ module.exports = {
     }
 
     const DECODED = decodeJwtToken(ACCESS_TOKEN);
+
+    
     const USER_ID = stringToObjectId(DECODED.id);
 
     // if user, gets userdata form id
