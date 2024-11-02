@@ -48,7 +48,7 @@ module.exports = {
     //   req.headers.authorization
     // );
     const ADMIN_ID = req.admin.id;
-    console.log('admin is here',ADMIN_ID)
+  
     if (ADMIN_ID == false) {
       res.status(403).json({
         success: false,
@@ -64,11 +64,10 @@ module.exports = {
   },
   editProfileImage: async (req, res, next) => {
     // Uploads to cloudinary
-
-    const DATA = await getUserIdHelper.getUserIdAndEmail(
-      req.headers.authorization
-    );
-    const ADMIN_ID = DATA.id;
+    // const DATA = await getUserIdHelper.getUserIdAndEmail(
+    //   req.headers.authorization
+    // );
+    const ADMIN_ID = req.admin.id
     if (ADMIN_ID == false) {
       res.status(403).json({
         success: false,

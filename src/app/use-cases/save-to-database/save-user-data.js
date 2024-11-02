@@ -1,6 +1,6 @@
 const userService = require('./../../data-access/userService')
-function saveSignupFormData(data){
-userService.saveUserData(data)
+async function  saveSignupFormData(data){
+await userService.saveUserData(data)
 }
 
 module.exports = {saveSignupFormData}

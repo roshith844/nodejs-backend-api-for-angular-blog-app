@@ -35,7 +35,6 @@ module.exports = {
     approveBlog: async (req, res, next) => {
         const { blogId } = req.body
         const RESPONSE = await publishBlog(blogId)
-        console.log(RESPONSE)
         if (RESPONSE === true) return res.json({ "success": true })
         res.json({ "success": false })
     },

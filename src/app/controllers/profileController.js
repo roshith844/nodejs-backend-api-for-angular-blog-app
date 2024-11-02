@@ -13,14 +13,8 @@ const getUserIdHelper = require("./../utils/get-user-id");
 // decodeJwtToken
 module.exports = {
   getProfile: async (req, res, next) => {
-    const USER_DATA = await getUserIdHelper.getUserIdAndEmail(req.headers.authorization);
-    const USER_ID = USER_DATA.id
-    if (USER_ID == false) {
-      res.status(403).json({
-        success: false,
-      });
-      return;
-    }
+    // const USER_DATA = await getUserIdHelper.getUserIdAndEmail(req.headers.authorization);
+    const USER_ID = req.user.id;
 
     const USER_DETAILS = await getUserDetails(USER_ID);
     if (
@@ -47,14 +41,7 @@ module.exports = {
 
   editProfile: async (req, res, next) => {
     const { name, email, phone } = req.body;
-    const USER_DATA = await getUserIdHelper.getUserIdAndEmail(req.headers.authorization);
-    const USER_ID = USER_DATA.id
-    if (USER_ID == false) {
-      res.status(403).json({
-        success: false,
-      });
-      return;
-    }
+    const USER_ID = req.user.id;
     if ((await editProfilebyId(USER_ID, name, email, phone)) === true) {
       res.json({ success: true });
     } else {
@@ -63,17 +50,10 @@ module.exports = {
   },
 
   editProfileImage: async (req, res, next) => {
-    const USER_DATA = await getUserIdHelper.getUserIdAndEmail(req.headers.authorization);
-    const USER_ID = USER_DATA.id
-    if (USER_ID == false) {
-      res.status(403).json({
-        success: false,
-      });
-      return;
-    }
+    const USER_ID = req.user.id;
     // Uploads to cloudinary
     const RESULT = await cloudinary.uploader.upload(req.file.path, {
-      public_id: `${req.user}_profile`,
+      public_id: `${req.user.id}_profile`,
       width: 500,
       height: 500,
       crop: "fill",

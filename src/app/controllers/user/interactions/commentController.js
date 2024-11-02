@@ -8,10 +8,10 @@ const {
 const getUserIdHelper = require("../../../utils/get-user-id");
 module.exports = {
   addComment: async (req, res, next) => {
-    const USER_DATA = await getUserIdHelper.getUserIdAndEmail(
-      req.headers.authorization
-    );
-    const USER_ID = USER_DATA.id;
+    // const USER_DATA = await getUserIdHelper.getUserIdAndEmail(
+    //   req.headers.authorization
+    // );
+    const USER_ID = req.user.id;
     if (USER_ID == false) {
       res.status(403).json({
         success: false,
@@ -37,10 +37,10 @@ module.exports = {
     });
   },
   deleteComment: async (req, res) => {
-    const USER_DATA = await getUserIdHelper.getUserIdAndEmail(
-      req.headers.authorization
-    );
-    const USER_ID = USER_DATA.id;
+    // const USER_DATA = await getUserIdHelper.getUserIdAndEmail(
+    //   req.headers.authorization
+    // );
+    const USER_ID = req.user.id;
     if (USER_ID == false) {
       res.status(403).json({
         success: false,

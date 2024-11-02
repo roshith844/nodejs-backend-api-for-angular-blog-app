@@ -13,12 +13,17 @@ const {
 const jwtTokenManagement = require("../../use-cases/token/jwt-token-management");
 const userDetailsManagement = require("./../../use-cases/get-data-from-database/get-user-details");
 const { getUserAuthDetails } = require("../../data-access/userService");
+const {
+  stringToObjectId,
+} = require("../../use-cases/modify-data/change-format");
+const {
+  decodeJwtToken,
+} = require("../../use-cases/token/jwt-token-management");
 
 // decodeJwtToken
 module.exports = {
   loginUser: async (req, res, next) => {
     const { email, password } = req.body;
-
     // Validation
     if (
       !(
@@ -36,17 +41,29 @@ module.exports = {
       email,
       password
     );
-    const USER_ID = await getDocumentId(email);
+    // const USER_ID = await getDocumentId(email);
     if (VERIFICATION_SUCCESS) {
-      const USER_DETAILS = await userDetailsManagement.fetchUserDetails(
-        email
-      );
+      const USER_DETAILS = await userDetailsManagement.fetchUserDetails(email);
       if (!USER_DETAILS)
         return res.json({ success: false, message: "user not found" });
       if (USER_DETAILS.status === "blocked")
         return res.json({ success: false, message: "user Blocked" });
 
       const TOKENS = jwtTokenGenerationService.generateJwtTokens(USER_DETAILS);
+      res.cookie("accessToken",  TOKENS.accessToken, {
+        httpOnly: true,
+        secure: false, // Set to true in production (HTTPS)
+        sameSite: "Lax",
+        maxAge:  60 * 24 * 60 * 60 * 1000, // 60 minutes
+      });
+
+      // Set the refresh token as an HTTP-only cookie
+      res.cookie("refreshToken", TOKENS.refreshToken, {
+        httpOnly: true,
+        secure: false, // Set to true in production (HTTPS)
+        sameSite: "Lax",
+        maxAge:  60 * 24 * 60 * 60 * 1000, // 60 days
+      });
       res.json(TOKENS);
     } else {
       res.json({
@@ -85,39 +102,10 @@ module.exports = {
     let isLoggedIn = false;
     let userId;
     let nameOfUser = "unknown";
-
-    // Decodes token
-    if (req.headers.hasOwnProperty("authorization")) {
-      if (req.headers.authorization != "null") {
-        // const TOKEN = req.headers.authorization
-        // const DECODED_TOKEN = tokenManagement.decodeJwtToken(TOKEN)
-        // if (DECODED_TOKEN != false) {
-        //     isLoggedIn = true
-        //     // userId = DECODED_TOKEN.id
-        //     userEmail =  DECODED_TOKEN.email
-
-        // }
-        const USER_EMAIL = jwtTokenManagement.getUserEmailFromToken(
-          req.headers.authorization
-        );
-        if (USER_EMAIL == false) {
-          res.status(403).json({
-            success: false,
-          });
-          return;
-        }
-        // Take userId from database
-        userId = await userDetailsManagement.getDocumentId(USER_EMAIL);
-        if (userId == false) {
-          res.status(403).json({
-            success: false,
-          });
-          return;
-        }
-        isLoggedIn = true;
-      }
-    } else {
-      // if no token or invalid set as public user
+    const ACCESS_TOKEN = req.cookies.accessToken;
+    console.log("access token", ACCESS_TOKEN)
+    if (ACCESS_TOKEN) isLoggedIn = ACCESS_TOKEN ? true : false;
+    else {
       res.json({
         role: "public",
         loggedIn: false,
@@ -125,29 +113,25 @@ module.exports = {
       return;
     }
 
-    // if user, gets userRole form id
-    const USER_INFO = await getUserProfileData(userId);
+    const DECODED = decodeJwtToken(ACCESS_TOKEN);
+    const USER_ID = stringToObjectId(DECODED.id);
+
+    // if user, gets userdata form id
+    const USER_INFO = await getUserProfileData(stringToObjectId(USER_ID));
     if (!USER_INFO) {
       res.status(403).json({
         success: false,
         message: "something went wrong",
       });
-    } else {
-      // if token valid set userloggin true\
-      if (userId != null || USER_INFO != null) {
-        res.json({
-          userId: USER_INFO.id,
-          role: USER_INFO.role,
-          name: USER_INFO.name,
-          image: USER_INFO.profilePictureUrl,
-          loggedIn: isLoggedIn,
-        });
-      } else {
-        res.json({
-          role: "public",
-          loggedIn: false,
-        });
-      }
+      return;
     }
+
+    res.json({
+      userId: USER_INFO.id,
+      role: USER_INFO.role,
+      name: USER_INFO.name,
+      image: USER_INFO.profilePictureUrl,
+      loggedIn: isLoggedIn,
+    });
   },
 };

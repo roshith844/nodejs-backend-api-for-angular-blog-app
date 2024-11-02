@@ -16,25 +16,35 @@ const REFRESH_TOKEN_SECRET =
 
 module.exports = {
   verifyUser: (req, res, next) => {
-    const TOKEN = req.headers.authorization;
-    if (!TOKEN) {
-      return res.status(400).send({
-        token: false,
-        message: "No token provided",
-      });
+    const ACCESS_TOKEN = req.cookies.accessToken;
+    console.log("I am ", ACCESS_TOKEN);
+    if (!ACCESS_TOKEN) {
+      // No token available, respond with 401 Unauthorized
+      return res.status(401).send({ message: "Token required" });
     }
+    // const TOKEN = req.headers.authorization;
+    // if (!ACCESS_TOKEN) {
+    //   return res.status(400).send({
+    //     token: false,
+    //     message: "No token provided",
+    //   });
+    // }
 
     try {
-      const DECODED = jwt.verify(TOKEN.split(" ")[1], ACCESS_TOKEN_SECRET);
+      const DECODED = jwt.verify(
+        ACCESS_TOKEN.split(" ")[1],
+        ACCESS_TOKEN_SECRET
+      );
+
       if (DECODED) {
         const USER_ID = stringToObjectId(DECODED.id);
         const ROLE = DECODED.role;
-        if (ROLE === "user") {
+        if (ROLE === "user" || ROLE === "writer") {
           req.user = {
             id: USER_ID,
             email: DECODED.email,
           };
-        }else {
+        } else {
           return res.status(400).send({
             token: false,
             message: "invalid token",
@@ -48,25 +58,37 @@ module.exports = {
         });
       }
     } catch (error) {
-      return res.status(400).send({
+      // Check if token expired
+      // if (error.name === "TokenExpiredError") {
+      //   throw { status: 401, message: "Token expired" };
+      // } else {
+      //   throw { status: 401, message: "Invalid token" };
+      // }
+
+      return res.status(401).send({
         token: false,
         message: "invalid token",
       });
     }
   },
   verifyAdmin: (req, res, next) => {
-    console.log('running token aurtorizatiobn')
-    const TOKEN = req.headers.authorization;
-    console.log(TOKEN)
-    if (!TOKEN) {
+    const ACCESS_TOKEN = req.cookies.accessToken;
+    if (!ACCESS_TOKEN) {
+      // No token available, respond with 401 Unauthorized
+      return res.status(401).send({ message: "Token required" });
+    }
+    // const ACCESS_TOKEN = req.headers.authorization;
+    if (!ACCESS_TOKEN) {
       return res.status(400).send({
         token: false,
         message: "No token provided",
       });
     }
     try {
-      const DECODED = jwt.verify(TOKEN.split(" ")[1], ACCESS_TOKEN_SECRET);
-      console.log(DECODED)
+      const DECODED = jwt.verify(
+        ACCESS_TOKEN.split(" ")[1],
+        ACCESS_TOKEN_SECRET
+      );
       if (DECODED) {
         const ADMIN_ID = stringToObjectId(DECODED.id);
         const ROLE = DECODED.role;
@@ -75,7 +97,7 @@ module.exports = {
             id: ADMIN_ID,
             email: DECODED.email,
           };
-        }else {
+        } else {
           return res.status(400).send({
             token: false,
             message: "invalid token",
@@ -96,16 +118,16 @@ module.exports = {
     }
   },
   verifyWriter: async (req, res, next) => {
-    const TOKEN = req.headers.authorization;
-    console.log(TOKEN);
-    if (!TOKEN) {
-      return res.status(400).send({
-        token: false,
-        message: "No token provided",
-      });
+    const ACCESS_TOKEN = req.cookies.accessToken;
+    if (!ACCESS_TOKEN) {
+      // No token available, respond with 401 Unauthorized
+      return res.status(401).send({ message: "Token required" });
     }
     try {
-      const DECODED = jwt.verify(TOKEN.split(" ")[1], ACCESS_TOKEN_SECRET);
+      const DECODED = jwt.verify(
+        ACCESS_TOKEN.split(" ")[1],
+        ACCESS_TOKEN_SECRET
+      );
       if (DECODED) {
         const USER_ID = stringToObjectId(DECODED.id);
         const ROLE = DECODED.role;
@@ -118,7 +140,6 @@ module.exports = {
             id: USER_ID,
             email: DECODED.email,
           };
-          console.log(req.user);
 
           next();
         } else {

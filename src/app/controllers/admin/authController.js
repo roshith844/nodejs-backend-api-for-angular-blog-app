@@ -22,6 +22,21 @@ module.exports = {
     if (!ADMIN_DETAILS)
       return res.json({ success: false, message: "Verification Failed" });
     const TOKENS = generateJwtTokens(ADMIN_DETAILS);
+          // Set the access token as an HTTP-only cookie
+          res.cookie("accessToken", TOKENS.accessToken, {
+            httpOnly: true,
+            secure: false, // Set to true in production (HTTPS)
+            sameSite: 'Lax',
+            maxAge:  60 * 24 * 60 * 60 * 1000, // 15 minutes
+          });
+    
+          // Set the refresh token as an HTTP-only cookie
+          res.cookie("refreshToken", TOKENS.refreshToken, {
+            httpOnly: true,
+            secure: false, // Set to true in production (HTTPS)
+            sameSite:  'Lax',
+            maxAge:  60 * 24 * 60 * 60 * 1000, // 7 days
+          });
     res.json(TOKENS);
   },
 };

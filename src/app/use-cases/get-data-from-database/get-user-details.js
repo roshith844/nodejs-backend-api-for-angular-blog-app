@@ -27,6 +27,7 @@ async function getUserRole(userId) {
 async function getUserProfileData(userId){
     if (userId == null) return false
     const USER_DETAILS = await userService.getUserDataFromId(userId)
+    console.log(USER_DETAILS)
     if (USER_DETAILS != null) {
         return {
             id: USER_DETAILS._id.toString(),

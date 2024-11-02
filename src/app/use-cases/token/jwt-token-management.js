@@ -17,6 +17,7 @@ function generateJwtTokens(userDetails) {
   };
 }
 
+
 function getUserEmailFromToken(token) {
   if (token === null) return false;
   const DECODED_TOKEN = jwtTokenService.verifyJwtToken(token);
