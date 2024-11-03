@@ -74,6 +74,17 @@ async function getUserAuthDetails(email) {
     },
   ]);
 }
+
+async function getUserAuthDetailsbyId(userId){
+  return await USER_MODEL.aggregate([
+    {
+      $match: { _id: userId},
+    },
+    {
+      $project: { _id: 1, role: 1, status: 1, email: 1 },
+    },
+  ]);
+}
 module.exports = {
   getUserDataFromEmail,
   getUserDataFromId,
@@ -84,4 +95,5 @@ module.exports = {
   getAdminDataFromId,
   getUserRoleAndStatusFromDatabase,
   getUserAuthDetails,
+  getUserAuthDetailsbyId
 };
