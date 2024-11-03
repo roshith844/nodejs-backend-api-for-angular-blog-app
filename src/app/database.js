@@ -1,9 +1,12 @@
-require('dotenv').config()
-const mongoose = require("mongoose")
+require("dotenv").config({ path: __dirname + "./../../.env" });
 
-mongoose.connect('mongodb+srv://roshith844:7906@cluster0.ggg7eva.mongodb.net/blog-app?retryWrites=true&w=majority').then(() => {
+const mongoose = require("mongoose");
+
+mongoose
+  .connect(process.env.DB_URL)
+  .then(() => {
     console.log("connection success");
-})
-    .catch((err) => {
-        console.log(err);
-    })
+  })
+  .catch((err) => {
+    console.log(err);
+  });
