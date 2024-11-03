@@ -50,11 +50,11 @@ module.exports = {
         return res.json({ success: false, message: "user Blocked" });
 
       const TOKENS = jwtTokenGenerationService.generateJwtTokens(USER_DETAILS);
-      res.cookie("accessToken",  TOKENS.accessToken, {
+      res.cookie("accessToken", TOKENS.accessToken, {
         httpOnly: true,
         secure: false, // Set to true in production (HTTPS)
         sameSite: "Lax",
-        maxAge:  60 * 24 * 60 * 60 * 1000, // 60 minutes
+        maxAge: 60 * 24 * 60 * 60 * 1000, // 60 minutes
       });
 
       // Set the refresh token as an HTTP-only cookie
@@ -62,9 +62,11 @@ module.exports = {
         httpOnly: true,
         secure: false, // Set to true in production (HTTPS)
         sameSite: "Lax",
-        maxAge:  60 * 24 * 60 * 60 * 1000, // 60 days
+        maxAge: 60 * 24 * 60 * 60 * 1000, // 60 days
       });
-      res.json(TOKENS);
+      res.json({
+        success: true,
+      });
     } else {
       res.json({
         success: false,
@@ -103,7 +105,7 @@ module.exports = {
     let userId;
     let nameOfUser = "unknown";
     const ACCESS_TOKEN = req.cookies.accessToken;
-    console.log("access token", ACCESS_TOKEN)
+    console.log("access token", ACCESS_TOKEN);
     if (ACCESS_TOKEN) isLoggedIn = ACCESS_TOKEN ? true : false;
     else {
       res.json({
@@ -115,7 +117,6 @@ module.exports = {
 
     const DECODED = decodeJwtToken(ACCESS_TOKEN);
 
-    
     const USER_ID = stringToObjectId(DECODED.id);
 
     // if user, gets userdata form id
