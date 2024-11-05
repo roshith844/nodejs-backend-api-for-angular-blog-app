@@ -1,7 +1,9 @@
 const jwt = require("jsonwebtoken");
-require("dotenv").config({ path: __dirname + "./../../../.env" });
+require("dotenv").config({
+  path: require("path").resolve(__dirname + "./../../../.env"),
+});
 const ACCESS_TOKEN_SECRET = process.env.ACCESS_TOKEN_SECRET;
-const REFRESH_TOKEN_SECRET = process.env.REFRESH_TOKEN_SECRET
+const REFRESH_TOKEN_SECRET = process.env.REFRESH_TOKEN_SECRET;
 
 function generateAccessToken(userDetails) {
   return jwt.sign(userDetails, ACCESS_TOKEN_SECRET, { expiresIn: "1m" });

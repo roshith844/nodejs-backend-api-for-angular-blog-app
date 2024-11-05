@@ -2,7 +2,9 @@ const jwt = require("jsonwebtoken");
 const {
   stringToObjectId,
 } = require("../../use-cases/modify-data/change-format");
-require("dotenv").config({ path: __dirname + "../../../../.env" });
+require("dotenv").config({
+  path: require("path").resolve(__dirname + "../../../../.env"),
+});
 const ACCESS_TOKEN_SECRET = process.env.ACCESS_TOKEN_SECRET;
 module.exports = {
   verifyUser: (req, res, next) => {
