@@ -29,9 +29,9 @@ module.exports = {
     const ACCESS_TOKEN = jwtTokenService.generateAccessToken(newPayload);
     res.cookie("accessToken", `Bearer ${ACCESS_TOKEN}`, {
       httpOnly: true,
-      secure: false, // Set to true in production (HTTPS)
-      sameSite: "Lax",
-      maxAge: 60 * 24 * 60 * 60 * 1000, // 60 minutes
+      secure: true,
+      sameSite: "None",
+      maxAge: 60 * 24 * 60 * 60 * 1000, 
     });
     res.end();
   },

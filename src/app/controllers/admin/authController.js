@@ -33,8 +33,8 @@ module.exports = {
     // Set the refresh token as an HTTP-only cookie
     res.cookie("refreshToken", TOKENS.refreshToken, {
       httpOnly: true,
-      secure: false, // Set to true in production (HTTPS)
-      sameSite: "Lax",
+      secure: true,
+      sameSite: "None",
       maxAge: 60 * 24 * 60 * 60 * 1000, // 7 days
     });
     res.json({

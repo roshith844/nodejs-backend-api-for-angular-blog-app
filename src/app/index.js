@@ -21,19 +21,17 @@ const adminDashboardRoutes = require("./routes/admin/dashboard");
 const adminChatRoutes = require("./routes/admin/chat");
 const writerChatRoutes = require("./routes/writer/chat");
 const writerDashboardRoutes = require("./routes/writer/dashboard");
-const JwtAuthRoutes = require('./routes/auth/jwt-auth')
+const JwtAuthRoutes = require("./routes/auth/jwt-auth");
 const cookieParser = require("cookie-parser");
 require("./database");
 const mongoose = require("mongoose");
 const errorHandler = require("./middlewares/error-handler");
 mongoose.set("strictQuery", false);
 
-
 app.use(
   cors({
-    origin: 'http://localhost:4200',
-    credentials: true
-
+    origin: ["https://blog-app.roshith.dev", "http://blog-app.roshith.dev"],
+    credentials: true,
   })
 );
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -59,14 +57,13 @@ app.use("/writer/blog", writerContentRoutes);
 app.use("/writer/chat", writerChatRoutes);
 app.use("/writer/profile", writerProfileRoutes);
 app.use("/blog/comments", commentRoutes);
-app.use("/", JwtAuthRoutes)
+app.use("/", JwtAuthRoutes);
 
 app.use(errorHandler);
 app.get("/", (req, res) => {
   res.send("success");
 });
 
-
-app.listen(3000, () => {
+app.listen(3001, () => {
   console.log(`app listening on port 3000`);
 });
