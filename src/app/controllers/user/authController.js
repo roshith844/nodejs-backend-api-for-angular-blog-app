@@ -75,19 +75,19 @@ module.exports = {
     }
   },
   logoutUser: async (req, res, next) => {
-    res.cookie("accessToken", TOKENS.accessToken, {
-      httpOnly: true,
-      secure: false, // Set to true in production (HTTPS)
-      sameSite: "Lax",
-      maxAge: 1, // 15 minutes
-    });
-
-    // Set the refresh token as an HTTP-only cookie
-    res.cookie("refreshToken", TOKENS.refreshToken, {
+    res.cookie("accessToken", "", {
       httpOnly: true,
       secure: true,
       sameSite: "None",
-      maxAge: 1, // 7 days
+      expires: new Date(0),
+    });
+
+    // Set the refresh token as an HTTP-only cookie
+    res.cookie("refreshToken", "", {
+      httpOnly: true,
+      secure: true,
+      sameSite: "None",
+      expires: new Date(0),
     });
     res.end();
   },
