@@ -52,16 +52,16 @@ module.exports = {
       const TOKENS = jwtTokenGenerationService.generateJwtTokens(USER_DETAILS);
       res.cookie("accessToken", TOKENS.accessToken, {
         httpOnly: true,
-        secure: true,    
-        sameSite: "None", 
+        secure: true,
+        sameSite: "None",
         maxAge: 60 * 24 * 60 * 60 * 1000, // 60 minutes
       });
 
       // Set the refresh token as an HTTP-only cookie
       res.cookie("refreshToken", TOKENS.refreshToken, {
         httpOnly: true,
-        secure: true,    
-        sameSite: "None", 
+        secure: true,
+        sameSite: "None",
         maxAge: 60 * 24 * 60 * 60 * 1000, // 60 days
       });
       res.json({
@@ -73,6 +73,23 @@ module.exports = {
         message: "invalid Credentials",
       });
     }
+  },
+  logoutUser: async (req, res, next) => {
+    res.cookie("accessToken", TOKENS.accessToken, {
+      httpOnly: true,
+      secure: false, // Set to true in production (HTTPS)
+      sameSite: "Lax",
+      maxAge: 1, // 15 minutes
+    });
+
+    // Set the refresh token as an HTTP-only cookie
+    res.cookie("refreshToken", TOKENS.refreshToken, {
+      httpOnly: true,
+      secure: true,
+      sameSite: "None",
+      maxAge: 1, // 7 days
+    });
+    res.end();
   },
 
   signupUser: async (req, res, next) => {
