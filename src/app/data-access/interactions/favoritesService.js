@@ -1,11 +1,6 @@
 const FAVORITES_MODEL = require('../../models/favoritesSchema')
 const mongoose = require('mongoose')
 async function checkUserExists(userId) {
-
-    /*
-    Returns a document with _id only if at least one document exists in the database that matches the given filter, 
-    and null otherwise.
-    */
     return await FAVORITES_MODEL.findOne({ userId: userId })
 }
 

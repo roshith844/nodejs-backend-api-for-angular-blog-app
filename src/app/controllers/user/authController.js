@@ -66,6 +66,7 @@ module.exports = {
       });
       res.json({
         success: true,
+        role: USER_DETAILS.role,
       });
     } else {
       res.json({
@@ -75,20 +76,19 @@ module.exports = {
     }
   },
   logoutUser: async (req, res, next) => {
-    res.cookie("accessToken", "", {
+    res.clearCookie("accessToken", {
       httpOnly: true,
-      secure: true,
+      secure: true, // Set to true in production (HTTPS)
       sameSite: "None",
-      expires: new Date(0),
     });
 
     // Set the refresh token as an HTTP-only cookie
-    res.cookie("refreshToken", "", {
+    res.clearCookie("refreshToken", {
       httpOnly: true,
-      secure: true,
+      secure: true, // Set to true in production (HTTPS)
       sameSite: "None",
-      expires: new Date(0),
     });
+
     res.end();
   },
 

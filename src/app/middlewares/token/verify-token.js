@@ -108,10 +108,6 @@ module.exports = {
       if (DECODED) {
         const USER_ID = stringToObjectId(DECODED.id);
         const ROLE = DECODED.role;
-        console.log("DECODED", DECODED);
-        // const RESPONSE = await getUserRole(USER_ID)
-        // console.log(RESPONSE)
-        // if (!RESPONSE) return res.status(400).send({ token: false, message: 'invalid token', })
         if (ROLE === "writer") {
           req.user = {
             id: USER_ID,

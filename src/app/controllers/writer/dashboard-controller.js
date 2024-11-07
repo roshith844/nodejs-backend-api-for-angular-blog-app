@@ -14,7 +14,6 @@ module.exports = {
       return;
     }
     const STATUS_COUNT = await getBlogStatusCountbyUserId(USER_ID);
-    console.log(STATUS_COUNT)
     if (!STATUS_COUNT) return res.json({ success: false });
     res.json({ success: true, statusCount: STATUS_COUNT });
   },
